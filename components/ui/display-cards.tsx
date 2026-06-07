@@ -23,7 +23,7 @@ function DisplayCard({
   return (
     <div
       className={cn(
-        "relative flex h-36 w-[22rem] flex-col justify-between overflow-hidden rounded-xl border p-4 shadow-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(233,30,140,0.3)] cursor-pointer",
+        "relative flex h-36 w-[22rem] flex-col justify-between overflow-hidden rounded-xl border p-4 shadow-lg transition-all duration-300 cursor-pointer",
         "bg-[var(--surface)] border-[var(--border-bright)] hover:border-[var(--primary)]",
         className
       )}

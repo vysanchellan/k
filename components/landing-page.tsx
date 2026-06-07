@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { motion } from "motion/react";
 import { StarsBackground } from "@/components/stars-background";
 import { ParticleCanvas } from "@/components/ui/particle-canvas";
 import { LoveHeart } from "@/components/love-heart";
@@ -14,14 +13,15 @@ import { ErrorBoundary } from "@/components/error-boundary";
 
 function FadeUp({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.7, delay }}
+    <div
+      style={{
+        opacity: 0,
+        animation: "fadeInUp 0.7s ease-out forwards",
+        animationDelay: `${delay}s`,
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -57,11 +57,12 @@ export function LandingPage() {
           <ParticleCanvas followMouse={true} maxParticles={800} speedScale={1.5} />
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          style={{ position: "relative", zIndex: 2, textAlign: "center" }}
+        <div
+          style={{
+            position: "relative", zIndex: 2, textAlign: "center",
+            animation: "heart-zoom-in 1s ease-out 0.2s forwards",
+            opacity: 0,
+          }}
         >
           <LoveHeart />
 
@@ -80,10 +81,7 @@ export function LandingPage() {
           </h1>
 
           {showSubtext && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8 }}
+            <p
               style={{
                 color: "var(--text-muted)",
                 fontSize: "0.85rem",
@@ -91,15 +89,12 @@ export function LandingPage() {
               }}
             >
               made with love, written in code
-            </motion.p>
+            </p>
           )}
-        </motion.div>
+        </div>
 
         {showScroll && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
+          <div
             style={{
               position: "absolute", bottom: 30,
               color: "var(--text-dim)", fontSize: "0.7rem",
@@ -107,7 +102,7 @@ export function LandingPage() {
             }}
           >
             scroll &darr;
-          </motion.div>
+          </div>
         )}
       </section>
 

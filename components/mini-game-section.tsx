@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
 import DisplayCards from "@/components/ui/display-cards";
 import { CipherGame } from "@/components/games/cipher-game";
 import { MemoryMatch } from "@/components/games/memory-match";
@@ -46,7 +45,6 @@ export function MiniGameSection() {
       <div
         style={{ cursor: "pointer" }}
         onClick={() => {
-          const idx = games.findIndex(g => g.id === games[0].id);
           setActiveGame(games[0].id);
         }}
       >
@@ -64,7 +62,6 @@ export function MiniGameSection() {
             key={g.id}
             onClick={() => setActiveGame(g.id)}
             style={{
-              position: activeGame !== g.id ? undefined : undefined,
               backgroundColor: activeGame === g.id ? "var(--primary)" : "transparent",
               color: activeGame === g.id ? "var(--bg)" : "var(--text-muted)",
               border: `1px solid ${activeGame === g.id ? "var(--primary)" : "var(--border)"}`,
@@ -78,45 +75,39 @@ export function MiniGameSection() {
         ))}
       </div>
 
-      <AnimatePresence>
-        {activeGame && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -30 }}
-            transition={{ duration: 0.3 }}
+      {activeGame && (
+        <div
+          style={{
+            marginTop: 24, maxWidth: 600, width: "100%", marginLeft: "auto", marginRight: "auto",
+            backgroundColor: "var(--surface)", border: "1px solid var(--border-bright)",
+            borderRadius: 12, boxShadow: "0 0 40px rgba(233,30,140,0.1)",
+          }}
+        >
+          <div
             style={{
-              marginTop: 24, maxWidth: 600, width: "100%", marginLeft: "auto", marginRight: "auto",
-              backgroundColor: "var(--surface)", border: "1px solid var(--border-bright)",
-              borderRadius: 12, boxShadow: "0 0 40px rgba(233,30,140,0.1)",
+              display: "flex", justifyContent: "space-between", alignItems: "center",
+              padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)",
             }}
           >
-            <div
+            <span style={{ color: "var(--primary)", fontSize: "0.8rem" }}>
+              {"> "}{games.find(g => g.id === activeGame)?.title}
+            </span>
+            <button
+              onClick={() => setActiveGame(null)}
               style={{
-                display: "flex", justifyContent: "space-between", alignItems: "center",
-                padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)",
+                background: "none", border: "none", color: "var(--text-dim)",
+                fontSize: "1.2rem", cursor: "pointer",
               }}
             >
-              <span style={{ color: "var(--primary)", fontSize: "0.8rem" }}>
-                {"> "}{games.find(g => g.id === activeGame)?.title}
-              </span>
-              <button
-                onClick={() => setActiveGame(null)}
-                style={{
-                  background: "none", border: "none", color: "var(--text-dim)",
-                  fontSize: "1.2rem", cursor: "pointer",
-                }}
-              >
-                \u2715
-              </button>
-            </div>
+              {"\u2715"}
+            </button>
+          </div>
 
-            {activeGame === "cipher" && <CipherGame />}
-            {activeGame === "memory" && <MemoryMatch />}
-            {activeGame === "type" && <TypeRacer />}
-          </motion.div>
-        )}
-      </AnimatePresence>
+          {activeGame === "cipher" && <CipherGame />}
+          {activeGame === "memory" && <MemoryMatch />}
+          {activeGame === "type" && <TypeRacer />}
+        </div>
+      )}
     </div>
   );
 }
