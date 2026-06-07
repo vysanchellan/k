@@ -10,6 +10,7 @@ import { DisplayCardsSection } from "@/components/display-cards-section";
 import { CodePoem } from "@/components/code-poem";
 import { CustomCursor } from "@/components/custom-cursor";
 import { BalloonsPopBackground } from "@/components/ui/balloons-pop-background";
+import { ErrorBoundary } from "@/components/error-boundary";
 
 function FadeUp({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -35,6 +36,7 @@ export function LandingPage() {
   }, []);
 
   return (
+    <ErrorBoundary>
     <main style={{ position: "relative", zIndex: 1 }}>
       <CustomCursor />
       <StarsBackground />
@@ -273,5 +275,6 @@ export function LandingPage() {
         </FadeUp>
       </section>
     </main>
+    </ErrorBoundary>
   );
 }

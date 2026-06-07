@@ -10,16 +10,21 @@ export function LoveHeart() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    canvas.width = 500;
-    canvas.height = 500;
+    const size = Math.min(800, window.innerWidth - 40);
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = size * dpr;
+    canvas.height = size * dpr;
+    canvas.style.width = size + "px";
+    canvas.style.height = size + "px";
+    ctx.scale(dpr, dpr);
 
-    const cx = canvas.width / 2;
-    const cy = canvas.height / 2 + 10;
+    const cx = size / 2;
+    const cy = size / 2 + 12;
 
-    const text = "kairos ";
-    const numPoints = 300;
-    const numRings = 12;
-    const scale = 9;
+    const text = "i love you ";
+    const numPoints = 500;
+    const numRings = 16;
+    const scale = size / 55;
 
     function heartX(t: number) {
       return 16 * Math.pow(Math.sin(t), 3);
@@ -39,67 +44,74 @@ export function LoveHeart() {
     let animId: number;
 
     const xTilt = -0.15;
+    const fontSize = Math.max(14, size / 45);
 
     function draw() {
-      const cvs = canvas;
-      const c = ctx;
-      if (!cvs || !c) return;
+      try {
+        const cvs = canvas;
+        const c = ctx;
+        if (!cvs || !c) return;
 
-      rotationAngle += 0.006;
-      c.clearRect(0, 0, cvs.width, cvs.height);
+        rotationAngle += 0.006;
+        c.clearRect(0, 0, size, size);
 
-      for (let ring = 0; ring < numRings; ring++) {
-        const rMult = 0.6 + (ring / numRings) * 0.55;
-        const ringAngle = (ring / numRings) * Math.PI;
-        const zOff = Math.sin(ringAngle) * 80;
-
-        for (let i = 0; i < numPoints; i++) {
-          const pt = pts[i];
-          const hx = pt.x * scale * rMult;
-          const hy = pt.y * scale * rMult;
-          const hz = zOff;
+        for (let ring = 0; ring < numRings; ring++) {
+          const rMult = 0.5 + (ring / numRings) * 0.65;
+          const ringAngle = (ring / numRings) * Math.PI;
+          const zOff = Math.sin(ringAngle) * size * 0.16;
 
           const cosR = Math.cos(rotationAngle);
           const sinR = Math.sin(rotationAngle);
           const cosTX = Math.cos(xTilt);
           const sinTX = Math.sin(xTilt);
 
-          let y1 = hy * cosTX - hz * sinTX;
-          let z1 = hy * sinTX + hz * cosTX;
+          for (let i = 0; i < numPoints; i++) {
+            const pt = pts[i];
+            const hx = pt.x * scale * rMult;
+            const hy = pt.y * scale * rMult;
+            const hz = zOff;
 
-          const rx = hx * cosR - z1 * sinR;
-          const rz = hx * sinR + z1 * cosR;
+            let y1 = hy * cosTX - hz * sinTX;
+            let z1 = hy * sinTX + hz * cosTX;
 
-          const perspective = 600 / (600 + rz);
-          const sx = cx + rx * perspective;
-          const sy = cy + y1 * perspective;
+            const rx = hx * cosR - z1 * sinR;
+            const rz = hx * sinR + z1 * cosR;
 
-          const alpha = 0.3 + 0.7 * Math.min(1, Math.max(0, perspective));
-          c.globalAlpha = alpha;
-          c.fillStyle = "#E91E8C";
-          c.font = "11px 'Fira Code', monospace";
-          c.textAlign = "center";
-          c.textBaseline = "middle";
+            const perspective = 600 / (600 + rz);
+            const sx = cx + rx * perspective;
+            const sy = cy + y1 * perspective;
 
-          const char = text[i % text.length];
-          c.fillText(char, sx, sy);
+            if (isNaN(sx) || isNaN(sy)) continue;
+
+            const alpha = 0.35 + 0.65 * Math.min(1, Math.max(0, perspective));
+            c.globalAlpha = alpha;
+            c.fillStyle = "#E91E8C";
+            c.font = `${fontSize}px 'Fira Code', monospace`;
+            c.textAlign = "center";
+            c.textBaseline = "middle";
+
+            const char = text[i % text.length];
+            c.fillText(char, sx, sy);
+          }
         }
-      }
 
-      animId = requestAnimationFrame(draw);
+        animId = requestAnimationFrame(draw);
+      } catch (e) {
+        console.error("LoveHeart draw error:", e);
+      }
     }
 
     draw();
 
-    return () => cancelAnimationFrame(animId);
+    return () => {
+      cancelAnimationFrame(animId);
+    };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      width={500}
-      height={500}
-      style={{ maxWidth: "100%", height: "auto", display: "block" }}
+      style={{ maxWidth: "100%", height: "auto", display: "block", margin: "0 auto" }}
     />
   );
 }
