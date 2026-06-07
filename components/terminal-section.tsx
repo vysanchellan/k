@@ -68,7 +68,7 @@ export function TerminalSection() {
       const t = setTimeout(() => {
         setDisplayedLines(prev => {
           const next = [...prev];
-          if (next.length === bootIdx) next.push("");
+          while (next.length <= bootIdx) next.push("");
           next[bootIdx] = line.slice(0, charIdx + 1);
           return next;
         });
@@ -77,6 +77,11 @@ export function TerminalSection() {
       return () => clearTimeout(t);
     } else {
       const t = setTimeout(() => {
+        setDisplayedLines(prev => {
+          const next = [...prev];
+          while (next.length <= bootIdx) next.push("");
+          return next;
+        });
         setBootIdx(i => i + 1);
         setCharIdx(0);
       }, 200);
@@ -233,7 +238,7 @@ export function TerminalSection() {
         }}
       >
         {displayedLines.map((line, i) => (
-          <div key={`boot-${i}`} style={{ color: line.startsWith("$") ? "var(--primary-dim)" : "var(--text)" }}>
+          <div key={`boot-${i}`} style={{ color: line?.startsWith("$") ? "var(--primary-dim)" : "var(--text)" }}>
             {line}
           </div>
         ))}
