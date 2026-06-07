@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import DisplayCards from "@/components/ui/display-cards";
 import { CipherGame } from "@/components/games/cipher-game";
 import { MemoryMatch } from "@/components/games/memory-match";
 import { TypeRacer } from "@/components/games/type-racer";
@@ -11,82 +10,95 @@ const games = [
     id: "cipher",
     title: "Decode Her",
     desc: "Crack the cipher. Reveal the truth.",
-    icon: <Code2 size={16} />,
+    icon: <Code2 size={20} />,
   },
   {
     id: "memory",
     title: "Memory Matrix",
     desc: "Match the symbols. Train your focus.",
-    icon: <Brain size={16} />,
+    icon: <Brain size={20} />,
   },
   {
     id: "type",
     title: "Compiler Speed Test",
     desc: "Type fast. Think faster.",
-    icon: <Zap size={16} />,
+    icon: <Zap size={20} />,
   },
 ];
-
-const cardData = games.map((g, i) => ({
-  icon: <div style={{ color: "var(--primary)" }}>{g.icon}</div>,
-  title: g.title,
-  description: g.desc,
-  date: "play",
-  iconClassName: "text-[var(--primary)]",
-  titleClassName: "text-[var(--text)]",
-  className: `[grid-area:stack] ${i === 1 ? "translate-x-16 translate-y-8" : ""} ${i === 2 ? "translate-x-32 translate-y-16" : ""}`,
-}));
 
 export function MiniGameSection() {
   const [activeGame, setActiveGame] = useState<string | null>(null);
 
   return (
-    <div>
-      <div
-        style={{ cursor: "pointer" }}
-        onClick={() => {
-          setActiveGame(games[0].id);
-        }}
-      >
-        <DisplayCards cards={cardData} />
-      </div>
-
-      <div
-        style={{
-          display: "flex", justifyContent: "center", gap: 12,
-          marginTop: 24, flexWrap: "wrap",
-        }}
-      >
-        {games.map((g, i) => (
-          <button
-            key={g.id}
-            onClick={() => setActiveGame(g.id)}
-            style={{
-              backgroundColor: activeGame === g.id ? "var(--primary)" : "transparent",
-              color: activeGame === g.id ? "var(--bg)" : "var(--text-muted)",
-              border: `1px solid ${activeGame === g.id ? "var(--primary)" : "var(--border)"}`,
-              borderRadius: 8, padding: "0.5rem 1rem",
-              fontFamily: "'Fira Code', monospace", fontSize: "0.75rem",
-              cursor: "pointer", transition: "all 0.2s ease",
-            }}
-          >
-            {g.title}
-          </button>
-        ))}
-      </div>
-
-      {activeGame && (
+    <div style={{ maxWidth: 700, width: "100%", margin: "0 auto" }}>
+      {!activeGame ? (
         <div
           style={{
-            marginTop: 24, maxWidth: 600, width: "100%", marginLeft: "auto", marginRight: "auto",
-            backgroundColor: "var(--surface)", border: "1px solid var(--border-bright)",
-            borderRadius: 12, boxShadow: "0 0 40px rgba(233,30,140,0.1)",
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: 16,
+          }}
+        >
+          {games.map((g) => (
+            <button
+              key={g.id}
+              onClick={() => setActiveGame(g.id)}
+              style={{
+                background: "none",
+                border: "1px solid var(--border-bright)",
+                borderRadius: 12,
+                padding: "24px 16px",
+                cursor: "pointer",
+                transition: "all 0.25s ease",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 12,
+                textAlign: "center",
+                color: "var(--text-muted)",
+                fontFamily: "'Fira Code', monospace",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "var(--primary)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(233,30,140,0.15)";
+                e.currentTarget.style.transform = "translateY(-6px)";
+                e.currentTarget.style.backgroundColor = "var(--surface)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "var(--border-bright)";
+                e.currentTarget.style.boxShadow = "none";
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.backgroundColor = "transparent";
+              }}
+            >
+              <div style={{ color: "var(--primary)", width: 20, height: 20 }}>
+                {g.icon}
+              </div>
+              <span style={{ color: "var(--text)", fontSize: "0.85rem", fontWeight: 600 }}>
+                {g.title}
+              </span>
+              <span style={{ fontSize: "0.7rem", lineHeight: 1.4 }}>
+                {g.desc}
+              </span>
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div
+          style={{
+            backgroundColor: "var(--surface)",
+            border: "1px solid var(--border-bright)",
+            borderRadius: 12,
+            boxShadow: "0 0 40px rgba(233,30,140,0.1)",
           }}
         >
           <div
             style={{
-              display: "flex", justifyContent: "space-between", alignItems: "center",
-              padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "0.75rem 1rem",
+              borderBottom: "1px solid var(--border)",
             }}
           >
             <span style={{ color: "var(--primary)", fontSize: "0.8rem" }}>
@@ -95,8 +107,11 @@ export function MiniGameSection() {
             <button
               onClick={() => setActiveGame(null)}
               style={{
-                background: "none", border: "none", color: "var(--text-dim)",
-                fontSize: "1.2rem", cursor: "pointer",
+                background: "none",
+                border: "none",
+                color: "var(--text-dim)",
+                fontSize: "1.2rem",
+                cursor: "pointer",
               }}
             >
               {"\u2715"}

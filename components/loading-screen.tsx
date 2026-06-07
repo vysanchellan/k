@@ -64,33 +64,56 @@ export function LoadingScreen({ onComplete }: Props) {
           </p>
         )}
         {step >= 5 && (
-          <div style={{ animation: "fadeInUp 0.8s ease forwards" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <h1
               style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: "clamp(3rem, 10vw, 7rem)",
+                fontFamily: "'Fira Code', monospace",
+                fontSize: "clamp(2.5rem, 8vw, 5.5rem)",
                 color: "var(--primary)",
                 textShadow: "0 0 40px var(--primary-dim), 0 0 80px var(--crimson)",
                 margin: 0,
                 lineHeight: 1.1,
-                animation: "pulse-glow 2s ease-in-out infinite",
-                letterSpacing: "0.02em",
+                letterSpacing: "0.08em",
+                fontWeight: 700,
               }}
             >
-              kairos
+              {"kairos".split("").map((ch, i) => (
+                <span
+                  key={i}
+                  style={{
+                    opacity: 0,
+                    animation: `fadeInUp 0.3s ease ${i * 0.08}s forwards`,
+                    display: "inline-block",
+                  }}
+                >
+                  {ch}
+                </span>
+              ))}
             </h1>
             <h2
               style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: "clamp(1.5rem, 4vw, 2.5rem)",
+                fontFamily: "'Fira Code', monospace",
+                fontSize: "clamp(1.2rem, 3vw, 2rem)",
                 color: "var(--primary-dim)",
                 textShadow: "0 0 20px rgba(233,30,140,0.3)",
                 margin: "0.25rem 0 0 0",
-                fontWeight: 300,
-                fontStyle: "italic",
+                fontWeight: 600,
+                fontStyle: "normal",
+                letterSpacing: "0.12em",
               }}
             >
-              govender
+              {"govender".split("").map((ch, i) => (
+                <span
+                  key={i}
+                  style={{
+                    opacity: 0,
+                    animation: `fadeInUp 0.3s ease ${0.5 + i * 0.08}s forwards`,
+                    display: "inline-block",
+                  }}
+                >
+                  {ch}
+                </span>
+              ))}
             </h2>
           </div>
         )}

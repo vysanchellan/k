@@ -6,19 +6,19 @@ const bootLines = [
   "\u2192 kairos",
   "",
   "$ describe --self",
-  "\u2192 software engineer | problem solver | chaos coordinator",
+  "\u2192 pretty | funny | problem solver | chaos coordinator",
   "",
   "$ cat personality.json",
   "\u2192 {",
   '\u2192   "intelligence": "exceptional",',
   '\u2192   "adaptability": "high",',
-  '\u2192   "coffee_dependency": true,',
+  '\u2192   "food_dependency": true,',
   '\u2192   "bug_tolerance": "low (in code only)",',
-  '\u2192   "vibe": "dark academia meets cyberpunk"',
+  '\u2192   "vibe": "energetic yapper | sharp as hell | quietly brilliant"',
   "\u2192 }",
   "",
   "$ ls skills/",
-  "\u2192 python/    javascript/    networking/    systems/    problem-solving/    coffee-making/",
+  "\u2192 python/    R/    sql/    data-viz/    machine-learning/    statistics/",
   "",
 ];
 
@@ -28,7 +28,7 @@ const memories = [
   "that-time-she-solved-it-first/",
   "rainy-conference-calls/",
   "architecture-diagrams/",
-  "coffee-break-epiphanies/",
+  "data-break-epiphanies/",
 ];
 
 const gitCommits = [
@@ -135,9 +135,9 @@ export function TerminalSection() {
     } else if (lower === "cat readme.txt" || lower === "cat readme") {
       r.push({ text: "KAIROS — A Study in Excellence" });
       r.push({ text: "" });
-      r.push({ text: "A software engineer who thinks in systems." });
-      r.push({ text: "Problem solver by trade, chaos coordinator by nature." });
-      r.push({ text: "Dark academia aesthetic meets cyberpunk energy." });
+      r.push({ text: "An aspiring data scientist who thinks in systems." });
+      r.push({ text: "Pretty, funny, and a problem solver by trade." });
+      r.push({ text: "Energetic yapper with a quietly brilliant mind." });
       r.push({ text: "" });
       r.push({ text: "Notable traits: exceptional intelligence, relentless" });
       r.push({ text: "curiosity, and an instinct better than any algorithm." });
