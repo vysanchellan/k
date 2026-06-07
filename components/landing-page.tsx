@@ -44,7 +44,6 @@ export function LandingPage() {
         zIndex: 1,
         width: "100%",
         maxWidth: "100vw",
-        overflow: "hidden",
         display: "flex",
         flexDirection: "column",
         alignItems: "stretch",

@@ -59,7 +59,7 @@ export function CodePoem() {
           fontSize: "0.75rem",
           lineHeight: 1.7,
           overflowX: "auto",
-          maxWidth: 640,
+          maxWidth: "min(640px, calc(100vw - 32px))",
           margin: "0 auto",
           whiteSpace: "pre",
         }}
