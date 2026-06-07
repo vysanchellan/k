@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { SpecialText } from "@/components/ui/special-text";
-import { ShaderAnimation } from "@/components/ui/shader-animation";
+import { NeuralNoise } from "@/components/ui/neural-noise";
 
 interface Props { onComplete: () => void }
 
@@ -32,7 +32,7 @@ export function LoadingScreen({ onComplete }: Props) {
         transition: "opacity 0.6s ease, transform 0.6s ease",
       }}
     >
-      <ShaderAnimation />
+      <NeuralNoise color={[0.9, 0.2, 0.4]} opacity={0.8} speed={0.0008} />
 
       <div
         style={{

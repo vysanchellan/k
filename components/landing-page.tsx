@@ -269,8 +269,8 @@ export function LandingPage() {
 
         <FadeUp>
           <AnimatedText
-            text="kairos"
-            textClassName="text-[clamp(3rem,10vw,7rem)] font-bold"
+            text="my sexy banana"
+            textClassName="text-[clamp(2rem,7vw,5rem)] font-bold"
             gradientColors="linear-gradient(90deg, #E91E8C, #FF1493, #C2185B, #FF1493, #E91E8C)"
             gradientAnimationDuration={3}
           />

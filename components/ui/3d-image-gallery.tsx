@@ -209,9 +209,9 @@ function CardModal() {
       <div
         style={{
           position: "relative",
-          width: "90vw",
-          maxWidth: 420,
-          maxHeight: "90vh",
+          width: "92vw",
+          maxWidth: 500,
+          maxHeight: "92vh",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -221,32 +221,32 @@ function CardModal() {
           onClick={handleClose}
           style={{
             position: "absolute",
-            top: -44,
-            right: 0,
+            top: -16,
+            right: -8,
             zIndex: 10,
-            background: "linear-gradient(135deg, rgba(233,30,140,0.25), rgba(194,24,91,0.15))",
+            background: "linear-gradient(135deg, rgba(233,30,140,0.3), rgba(194,24,91,0.2))",
             backdropFilter: "blur(12px)",
             WebkitBackdropFilter: "blur(12px)",
             border: "1px solid rgba(255,255,255,0.12)",
             borderRadius: "50%",
-            width: 38,
-            height: 38,
+            width: 36,
+            height: 36,
             color: "#fff",
-            fontSize: "1.1rem",
+            fontSize: "1rem",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            boxShadow: "0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)",
+            boxShadow: "0 4px 16px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)",
             transition: "all 0.3s ease",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = "linear-gradient(135deg, rgba(233,30,140,0.4), rgba(194,24,91,0.3))";
+            e.currentTarget.style.background = "linear-gradient(135deg, rgba(233,30,140,0.5), rgba(194,24,91,0.3))";
             e.currentTarget.style.borderColor = "rgba(233,30,140,0.4)";
             e.currentTarget.style.transform = "scale(1.1)";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = "linear-gradient(135deg, rgba(233,30,140,0.25), rgba(194,24,91,0.15))";
+            e.currentTarget.style.background = "linear-gradient(135deg, rgba(233,30,140,0.3), rgba(194,24,91,0.2))";
             e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
             e.currentTarget.style.transform = "scale(1)";
           }}
@@ -257,44 +257,56 @@ function CardModal() {
         <div
           style={{
             width: "100%",
-            borderRadius: 20,
+            borderRadius: 24,
             overflow: "hidden",
-            background: "linear-gradient(135deg, rgba(30,30,40,0.95), rgba(15,15,25,0.98))",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
-            border: "1px solid rgba(255,255,255,0.08)",
-            boxShadow: "0 24px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05)",
+            background: "linear-gradient(135deg, rgba(25,25,35,0.96), rgba(10,10,20,0.98))",
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
+            border: "1px solid rgba(255,255,255,0.06)",
+            boxShadow: "0 32px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05)",
           }}
         >
-          <div style={{ position: "relative", width: "100%" }}>
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 0,
+              background: "rgba(0,0,0,0.3)",
+            }}
+          >
             <img
               loading="lazy"
               alt={selectedCard.alt}
               src={selectedCard.imageUrl || "/placeholder.svg"}
               style={{
                 width: "100%",
+                height: "auto",
+                maxHeight: "68vh",
                 display: "block",
                 objectFit: "contain",
-                maxHeight: "70vh",
               }}
             />
           </div>
 
           <div
             style={{
-              padding: "14px 20px 18px",
+              padding: "14px 22px 18px",
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
+              background: "linear-gradient(0deg, rgba(0,0,0,0.3), transparent)",
             }}
           >
             <h3
               style={{
-                color: "rgba(255,255,255,0.8)",
-                fontSize: "0.9rem",
+                color: "rgba(255,255,255,0.75)",
+                fontSize: "0.85rem",
                 fontFamily: "'Cormorant Garamond', serif",
                 fontStyle: "italic",
-                letterSpacing: "0.02em",
+                letterSpacing: "0.04em",
               }}
             >
               {selectedCard.title}
@@ -307,12 +319,13 @@ function CardModal() {
                 background: "none",
                 border: "none",
                 cursor: "pointer",
-                fontSize: "1.5rem",
+                fontSize: "1.4rem",
                 lineHeight: 1,
-                padding: 4,
-                color: isFavorited ? "#E91E8C" : "rgba(255,255,255,0.3)",
-                textShadow: isFavorited ? "0 0 12px rgba(233,30,140,0.6)" : "none",
+                padding: "2px 6px",
+                color: isFavorited ? "#E91E8C" : "rgba(255,255,255,0.25)",
+                textShadow: isFavorited ? "0 0 16px rgba(233,30,140,0.5)" : "none",
                 transition: "all 0.3s ease",
+                borderRadius: 8,
               }}
               onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.2)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; }}
