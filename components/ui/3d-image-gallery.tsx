@@ -149,7 +149,7 @@ function FloatingCard({
   return (
     <group ref={groupRef} position={[position.x, position.y, position.z]}>
       <Plane
-        args={[4.5, 6]}
+        args={[18, 24]}
         onClick={handleClick}
         onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = "pointer" }}
         onPointerOut={(e) => { e.stopPropagation(); setHovered(false); document.body.style.cursor = "auto" }}
