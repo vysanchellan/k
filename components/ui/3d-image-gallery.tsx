@@ -37,26 +37,24 @@ function CardProvider({ children }: { children: React.ReactNode }) {
   const [selectedCard, setSelectedCard] = useState<Card | null>(null)
 
   const cards: Card[] = [
-    { id: "1", imageUrl: "https://i.ibb.co/4ZWcP129/1.png", alt: "Elegant Invitation", title: "Elegant Invitation" },
-    { id: "2", imageUrl: "https://i.ibb.co/TMbhBRcL/2.png", alt: "Modern Design", title: "Modern Design" },
-    { id: "3", imageUrl: "https://i.ibb.co/spXBFdSm/3.png", alt: "Vintage Style", title: "Vintage Style" },
-    { id: "4", imageUrl: "https://i.ibb.co/N2TCN0bC/4.png", alt: "Minimalist", title: "Minimalist" },
-    { id: "5", imageUrl: "https://i.ibb.co/jZkh6q1M/5.png", alt: "Floral Design", title: "Floral Design" },
-    { id: "6", imageUrl: "https://i.ibb.co/6cc7mksr/6.png", alt: "Geometric", title: "Geometric" },
-    { id: "7", imageUrl: "https://i.ibb.co/bjV35jNQ/7.png", alt: "Luxury Gold", title: "Luxury Gold" },
-    { id: "8", imageUrl: "https://i.ibb.co/PZ7WLs7g/8.png", alt: "Rustic Style", title: "Rustic Style" },
-    { id: "9", imageUrl: "https://i.ibb.co/qLR5bQRM/9.png", alt: "Dark Modern", title: "Dark Modern" },
-    { id: "10", imageUrl: "https://i.ibb.co/PdNhw3K/10.png", alt: "Colorful Party", title: "Colorful Party" },
-    { id: "11", imageUrl: "https://i.ibb.co/zWpN1nqJ/11.png", alt: "Geometric", title: "Geometric" },
-    { id: "12", imageUrl: "https://i.ibb.co/fVYnCXgR/12.png", alt: "Luxury Gold", title: "Luxury Gold" },
-    { id: "13", imageUrl: "https://i.ibb.co/1G6jZWcZ/13.png", alt: "Rustic Style", title: "Rustic Style" },
-    { id: "14", imageUrl: "https://i.ibb.co/xKG7m905/14.png", alt: "Dark Modern", title: "Dark Modern" },
-    { id: "15", imageUrl: "https://i.ibb.co/7dJzR3xK/15.png", alt: "Colorful Party", title: "Colorful Party" },
-    { id: "16", imageUrl: "https://i.ibb.co/NdJ1csXB/16.png", alt: "Elegant Script", title: "Elegant Script" },
-    { id: "17", imageUrl: "https://i.ibb.co/8L2Sdt5Q/17.png", alt: "Watercolor Art", title: "Watercolor Art" },
-    { id: "18", imageUrl: "https://i.ibb.co/mC1zxJYq/18.png", alt: "Botanical", title: "Botanical" },
-    { id: "19", imageUrl: "https://i.ibb.co/wryzsKs4/20.png", alt: "Art Deco", title: "Art Deco" },
-    { id: "20", imageUrl: "https://i.ibb.co/1fvnxL3L/19.png", alt: "Marble Luxury", title: "Marble Luxury" },
+    { id: "1",  imageUrl: "https://i.ibb.co/7JTDZWN1/Whats-App-Image-2026-06-07-at-20-09-27-3.jpg",  alt: "Kairos", title: "Kairos" },
+    { id: "2",  imageUrl: "https://i.ibb.co/4Rmckx6h/Whats-App-Image-2026-06-07-at-20-09-28.jpg",    alt: "Kairos", title: "Kairos" },
+    { id: "3",  imageUrl: "https://i.ibb.co/czx4nG9/Whats-App-Image-2026-06-07-at-20-09-28-1.jpg",  alt: "Kairos", title: "Kairos" },
+    { id: "4",  imageUrl: "https://i.ibb.co/JwtYbDJ2/Whats-App-Image-2026-06-07-at-20-09-28-2.jpg",  alt: "Kairos", title: "Kairos" },
+    { id: "5",  imageUrl: "https://i.ibb.co/999NVryS/Whats-App-Image-2026-06-07-at-20-09-29-2.jpg",  alt: "Kairos", title: "Kairos" },
+    { id: "6",  imageUrl: "https://i.ibb.co/ZRKYz1Px/Whats-App-Image-2026-06-07-at-20-09-29-3.jpg",  alt: "Kairos", title: "Kairos" },
+    { id: "7",  imageUrl: "https://i.ibb.co/G3GhDZfS/Whats-App-Image-2026-06-07-at-20-09-30.jpg",    alt: "Kairos", title: "Kairos" },
+    { id: "8",  imageUrl: "https://i.ibb.co/M554VkDm/Whats-App-Image-2026-06-07-at-20-09-30-1.jpg",  alt: "Kairos", title: "Kairos" },
+    { id: "9",  imageUrl: "https://i.ibb.co/ksDvvCHR/Whats-App-Image-2026-06-07-at-20-09-30-2.jpg",  alt: "Kairos", title: "Kairos" },
+    { id: "10", imageUrl: "https://i.ibb.co/5WV1bYd6/Whats-App-Image-2026-06-07-at-20-09-31-2.jpg",  alt: "Kairos", title: "Kairos" },
+    { id: "11", imageUrl: "https://i.ibb.co/tMmqYf3z/Whats-App-Image-2026-06-07-at-20-09-32.jpg",    alt: "Kairos", title: "Kairos" },
+    { id: "12", imageUrl: "https://i.ibb.co/ZzcsY5mG/Whats-App-Image-2026-06-07-at-20-09-31-1.jpg",  alt: "Kairos", title: "Kairos" },
+    { id: "13", imageUrl: "https://i.ibb.co/vCm7Ln8F/Whats-App-Image-2026-06-07-at-20-09-29.jpg",    alt: "Kairos", title: "Kairos" },
+    { id: "14", imageUrl: "https://i.ibb.co/3yJ7MP9x/Whats-App-Image-2026-06-07-at-20-09-27-1.jpg",  alt: "Kairos", title: "Kairos" },
+    { id: "15", imageUrl: "https://i.ibb.co/5Xq4LtW0/Whats-App-Image-2026-06-07-at-20-09-27.jpg",   alt: "Kairos", title: "Kairos" },
+    { id: "16", imageUrl: "https://i.ibb.co/Zp2h4P2Q/Whats-App-Image-2026-06-07-at-20-09-29-1.jpg",  alt: "Kairos", title: "Kairos" },
+    { id: "17", imageUrl: "https://i.ibb.co/gMrqpmvL/Whats-App-Image-2026-06-07-at-20-09-31.jpg",    alt: "Kairos", title: "Kairos" },
+    { id: "18", imageUrl: "https://i.ibb.co/DHBpfVjP/Whats-App-Image-2026-06-07-at-20-09-27-2.jpg",  alt: "Kairos", title: "Kairos" },
   ]
 
   return (
@@ -260,10 +258,30 @@ function CardModal() {
             <div className="flex gap-2">
               <button
                 type="button"
-                className="inline-flex h-9 flex-1 items-center justify-center rounded-lg text-base font-medium text-black outline-none transition duration-300 ease-out hover:opacity-80 active:scale-[0.97]"
-                style={{ backgroundColor: "#E91E8C" }}
+                className="inline-flex h-10 flex-1 items-center justify-center rounded-xl text-sm font-medium text-white outline-none transition duration-300 ease-out hover:scale-[1.02] active:scale-[0.97]"
+                style={{
+                  background: "linear-gradient(135deg, rgba(233,30,140,0.6), rgba(194,24,91,0.4))",
+                  backdropFilter: "blur(16px)",
+                  WebkitBackdropFilter: "blur(16px)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  boxShadow: "0 4px 24px rgba(233,30,140,0.25), inset 0 1px 0 rgba(255,255,255,0.2)",
+                  position: "relative",
+                  overflow: "hidden",
+                }}
               >
-                <div className="flex items-center gap-1.5">
+                <span
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: "-50%",
+                    width: "200%",
+                    height: "100%",
+                    background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)",
+                    transform: "skewX(-20deg)",
+                    animation: "shimmer 3s ease-in-out infinite",
+                  }}
+                />
+                <div className="flex items-center gap-1.5" style={{ position: "relative", zIndex: 1 }}>
                   <Download className="h-4 w-4" strokeWidth={1.8} />
                   <span>Download</span>
                 </div>
@@ -271,10 +289,30 @@ function CardModal() {
               <button
                 type="button"
                 onClick={toggleFavorite}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-black outline-none transition duration-300 ease-out hover:opacity-80 active:scale-[0.97]"
-                style={{ backgroundColor: "#E91E8C" }}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-white outline-none transition duration-300 ease-out hover:scale-105 active:scale-[0.97]"
+                style={{
+                  background: "linear-gradient(135deg, rgba(233,30,140,0.6), rgba(194,24,91,0.4))",
+                  backdropFilter: "blur(16px)",
+                  WebkitBackdropFilter: "blur(16px)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  boxShadow: "0 4px 24px rgba(233,30,140,0.25), inset 0 1px 0 rgba(255,255,255,0.2)",
+                  position: "relative",
+                  overflow: "hidden",
+                }}
               >
-                <Heart className="h-4 w-4" strokeWidth={1.8} fill={isFavorited ? "currentColor" : "none"} />
+                <span
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: "-50%",
+                    width: "200%",
+                    height: "100%",
+                    background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)",
+                    transform: "skewX(-20deg)",
+                    animation: "shimmer 3s ease-in-out infinite",
+                  }}
+                />
+                <Heart className="h-4 w-4" strokeWidth={1.8} fill={isFavorited ? "currentColor" : "none"} style={{ position: "relative", zIndex: 1 }} />
               </button>
             </div>
           </div>
@@ -362,7 +400,8 @@ export default function StellarCardGallerySingle() {
               enableRotate
               minDistance={5}
               maxDistance={40}
-              autoRotate={false}
+              autoRotate={true}
+              autoRotateSpeed={0.8}
               rotateSpeed={0.5}
               zoomSpeed={1.2}
               panSpeed={0.8}
