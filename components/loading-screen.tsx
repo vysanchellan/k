@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { SpecialText } from "@/components/ui/special-text";
-import { ParticleCanvas } from "@/components/ui/particle-canvas";
+import { ShaderAnimation } from "@/components/ui/shader-animation";
 
 interface Props { onComplete: () => void }
 
@@ -10,13 +10,13 @@ export function LoadingScreen({ onComplete }: Props) {
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    const t1 = setTimeout(() => setStep(1), 200);
-    const t2 = setTimeout(() => setStep(2), 1000);
-    const t3 = setTimeout(() => setStep(3), 1800);
-    const t4 = setTimeout(() => setStep(4), 2600);
-    const t5 = setTimeout(() => setStep(5), 3000);
-    const t6 = setTimeout(() => setFadeOut(true), 3500);
-    const t7 = setTimeout(() => onComplete(), 4100);
+    const t1 = setTimeout(() => setStep(1), 400);
+    const t2 = setTimeout(() => setStep(2), 1600);
+    const t3 = setTimeout(() => setStep(3), 2800);
+    const t4 = setTimeout(() => setStep(4), 3800);
+    const t5 = setTimeout(() => setStep(5), 4800);
+    const t6 = setTimeout(() => setFadeOut(true), 5800);
+    const t7 = setTimeout(() => onComplete(), 6400);
     return () => { [t1,t2,t3,t4,t5,t6,t7].forEach(clearTimeout); };
   }, [onComplete]);
 
@@ -32,48 +32,67 @@ export function LoadingScreen({ onComplete }: Props) {
         transition: "opacity 0.6s ease, transform 0.6s ease",
       }}
     >
-      <ParticleCanvas followMouse={true} maxParticles={1200} speedScale={2.5} />
+      <ShaderAnimation />
 
       <div
         style={{
           position: "absolute", top: 0, left: 0, width: "100%", height: "100%",
           pointerEvents: "none", zIndex: 1,
-          background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 5px)",
+          background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 5px)",
         }}
       />
 
-      <div style={{ position: "relative", zIndex: 2, textAlign: "center" }}>
+      <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "0 20px" }}>
         {step >= 1 && (
           <p style={{ color: "var(--primary-dim)", fontSize: "0.85rem", opacity: 0.7, marginBottom: "0.5rem" }}>
-            <SpecialText text="> booting kairos.exe" duration={600} />
+            <SpecialText text="> booting kairos.exe" duration={800} />
           </p>
         )}
         {step >= 2 && (
           <p style={{ color: "var(--primary-dim)", fontSize: "0.85rem", opacity: 0.7, marginBottom: "0.5rem" }}>
-            <SpecialText text="> scanning for exceptional humans..." duration={600} />
+            <SpecialText text="> loading shaders..." duration={800} />
           </p>
         )}
         {step >= 3 && (
           <p style={{ color: "var(--primary)", fontSize: "0.85rem", opacity: 0.7, marginBottom: "0.5rem" }}>
-            <SpecialText text="> one found. compiling her story." duration={600} />
+            <SpecialText text="> one found. compiling her story." duration={800} />
           </p>
         )}
         {step >= 4 && (
           <p style={{ color: "var(--primary-glow)", fontSize: "0.85rem", opacity: 0.7, marginBottom: "1.5rem" }}>
-            <SpecialText text="> done." duration={400} />
+            <SpecialText text="> done. rendering..." duration={600} />
           </p>
         )}
         {step >= 5 && (
-          <h1
-            style={{
-              fontFamily: "'Cormorant Garamond', serif", fontSize: "12.5rem",
-              color: "var(--primary)", textShadow: "0 0 40px var(--primary-dim)",
-              margin: 0, lineHeight: 1, animation: "pulse-glow 2s ease-in-out infinite",
-              letterSpacing: "-0.05em",
-            }}
-          >
-            K
-          </h1>
+          <div style={{ animation: "fadeInUp 0.8s ease forwards" }}>
+            <h1
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: "clamp(3rem, 10vw, 7rem)",
+                color: "var(--primary)",
+                textShadow: "0 0 40px var(--primary-dim), 0 0 80px var(--crimson)",
+                margin: 0,
+                lineHeight: 1.1,
+                animation: "pulse-glow 2s ease-in-out infinite",
+                letterSpacing: "0.02em",
+              }}
+            >
+              kairos
+            </h1>
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: "clamp(1.5rem, 4vw, 2.5rem)",
+                color: "var(--primary-dim)",
+                textShadow: "0 0 20px rgba(233,30,140,0.3)",
+                margin: "0.25rem 0 0 0",
+                fontWeight: 300,
+                fontStyle: "italic",
+              }}
+            >
+              govender
+            </h2>
+          </div>
         )}
       </div>
 
@@ -87,7 +106,7 @@ export function LoadingScreen({ onComplete }: Props) {
           style={{
             height: "100%", width: "100%",
             background: "linear-gradient(90deg, var(--crimson), var(--primary-glow))",
-            animation: "progress-fill 3.2s ease-in-out forwards",
+            animation: "progress-fill 4.8s ease-in-out forwards",
             transformOrigin: "left center",
           }}
         />
@@ -97,7 +116,7 @@ export function LoadingScreen({ onComplete }: Props) {
         style={{
           position: "absolute", top: 0, left: 0, width: "100%", height: "100%",
           pointerEvents: "none", zIndex: 1,
-          background: "linear-gradient(180deg, rgba(233,30,140,0.06) 0%, transparent 100%)",
+          background: "linear-gradient(180deg, rgba(233,30,140,0.04) 0%, transparent 100%)",
           animation: "scan-line 3s ease-in-out infinite",
         }}
       />
@@ -106,6 +125,10 @@ export function LoadingScreen({ onComplete }: Props) {
         @keyframes progress-fill {
           from { transform: scaleX(0); }
           to { transform: scaleX(1); }
+        }
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
     </div>

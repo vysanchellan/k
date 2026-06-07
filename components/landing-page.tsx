@@ -9,6 +9,7 @@ import { MiniGameSection } from "@/components/mini-game-section";
 import { DisplayCardsSection } from "@/components/display-cards-section";
 import { CodePoem } from "@/components/code-poem";
 import { CustomCursor } from "@/components/custom-cursor";
+import { BalloonsPopBackground } from "@/components/ui/balloons-pop-background";
 
 function FadeUp({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -236,14 +237,12 @@ export function LandingPage() {
           alignItems: "center",
           textAlign: "center",
           position: "relative",
+          overflow: "hidden",
+          minHeight: "80vh",
         }}
       >
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-          <ParticleCanvas
-            followMouse={false}
-            maxParticles={400}
-            speedScale={0.8}
-          />
+          <BalloonsPopBackground />
         </div>
 
         <FadeUp>
