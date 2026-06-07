@@ -7,7 +7,6 @@ import { TerminalSection } from "@/components/terminal-section";
 import { MiniGameSection } from "@/components/mini-game-section";
 import { DisplayCardsSection } from "@/components/display-cards-section";
 import { CodePoem } from "@/components/code-poem";
-import { CustomCursor } from "@/components/custom-cursor";
 import { BalloonsPopBackground } from "@/components/ui/balloons-pop-background";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { AnimatedText } from "@/components/ui/animated-shiny-text";
@@ -40,7 +39,6 @@ export function LandingPage() {
   return (
     <ErrorBoundary>
     <main style={{ position: "relative", zIndex: 1 }}>
-      <CustomCursor />
       <Starfield3DBg />
 
       {/* Section 1 — Hero */}
