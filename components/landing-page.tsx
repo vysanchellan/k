@@ -38,7 +38,18 @@ export function LandingPage() {
 
   return (
     <ErrorBoundary>
-    <main style={{ position: "relative", zIndex: 1 }}>
+    <main
+      style={{
+        position: "relative",
+        zIndex: 1,
+        width: "100%",
+        maxWidth: "100vw",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "stretch",
+      }}
+    >
       <Starfield3DBg />
 
       {/* Section 1 — Hero */}
