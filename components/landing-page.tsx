@@ -10,6 +10,8 @@ import { CodePoem } from "@/components/code-poem";
 import { CustomCursor } from "@/components/custom-cursor";
 import { BalloonsPopBackground } from "@/components/ui/balloons-pop-background";
 import { ErrorBoundary } from "@/components/error-boundary";
+import { AnimatedText } from "@/components/ui/animated-shiny-text";
+import { GallerySection } from "@/components/gallery-section";
 
 function FadeUp({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -66,19 +68,12 @@ export function LandingPage() {
         >
           <LoveHeart />
 
-          <h1
-            className="serif"
-            style={{
-              fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
-              color: "var(--primary)",
-              fontStyle: "italic",
-              animation: "pulse-glow 3s ease-in-out infinite",
-              marginTop: 8,
-              lineHeight: 1.2,
-            }}
-          >
-            for kairos.
-          </h1>
+          <AnimatedText
+            text="for kairos."
+            textClassName="text-[clamp(2.5rem,6vw,4.5rem)] font-bold italic"
+            gradientColors="linear-gradient(90deg, #E91E8C, #FF1493, #C2185B, #FF1493, #E91E8C)"
+            gradientAnimationDuration={3}
+          />
 
           {showSubtext && (
             <p
@@ -97,11 +92,20 @@ export function LandingPage() {
           <div
             style={{
               position: "absolute", bottom: 30,
-              color: "var(--text-dim)", fontSize: "0.7rem",
+              color: "var(--text-dim)",
               animation: "float 2s ease-in-out infinite",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 2,
+              opacity: 0.5,
+              fontFamily: "'Fira Code', monospace",
             }}
           >
-            scroll &darr;
+            <span style={{ fontSize: "0.6rem", letterSpacing: "0.15em", textTransform: "uppercase" }}>scroll</span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ opacity: 0.7 }}>
+              <path d="M7 1v10M3 7l4 4 4-4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </div>
         )}
       </section>
@@ -225,7 +229,10 @@ export function LandingPage() {
         </FadeUp>
       </section>
 
-      {/* Section 6 — Sign-off */}
+      {/* Section 6 — Album */}
+      <GallerySection />
+
+      {/* Section 7 — Sign-off */}
       <section
         style={{
           padding: "120px 20px",
@@ -243,19 +250,12 @@ export function LandingPage() {
         </div>
 
         <FadeUp>
-          <h1
-            className="serif"
-            style={{
-              fontSize: "clamp(3rem, 10vw, 7rem)",
-              color: "var(--primary)",
-              animation: "pulse-glow 4s ease-in-out infinite",
-              letterSpacing: "-0.03em",
-              position: "relative",
-              zIndex: 2,
-            }}
-          >
-            kairos
-          </h1>
+          <AnimatedText
+            text="kairos"
+            textClassName="text-[clamp(3rem,10vw,7rem)] font-bold"
+            gradientColors="linear-gradient(90deg, #E91E8C, #FF1493, #C2185B, #FF1493, #E91E8C)"
+            gradientAnimationDuration={3}
+          />
           <p
             style={{
               color: "var(--text-muted)",

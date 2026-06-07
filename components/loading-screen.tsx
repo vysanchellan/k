@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { SpecialText } from "@/components/ui/special-text";
 import { ShaderAnimation } from "@/components/ui/shader-animation";
+import { AnimatedText } from "@/components/ui/animated-shiny-text";
 
 interface Props { onComplete: () => void }
 
@@ -64,58 +65,12 @@ export function LoadingScreen({ onComplete }: Props) {
           </p>
         )}
         {step >= 5 && (
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <h1
-              style={{
-                fontFamily: "'Fira Code', monospace",
-                fontSize: "clamp(2.5rem, 8vw, 5.5rem)",
-                color: "var(--primary)",
-                textShadow: "0 0 40px var(--primary-dim), 0 0 80px var(--crimson)",
-                margin: 0,
-                lineHeight: 1.1,
-                letterSpacing: "0.08em",
-                fontWeight: 700,
-              }}
-            >
-              {"kairos".split("").map((ch, i) => (
-                <span
-                  key={i}
-                  style={{
-                    opacity: 0,
-                    animation: `fadeInUp 0.3s ease ${i * 0.08}s forwards`,
-                    display: "inline-block",
-                  }}
-                >
-                  {ch}
-                </span>
-              ))}
-            </h1>
-            <h2
-              style={{
-                fontFamily: "'Fira Code', monospace",
-                fontSize: "clamp(1.2rem, 3vw, 2rem)",
-                color: "var(--primary-dim)",
-                textShadow: "0 0 20px rgba(233,30,140,0.3)",
-                margin: "0.25rem 0 0 0",
-                fontWeight: 600,
-                fontStyle: "normal",
-                letterSpacing: "0.12em",
-              }}
-            >
-              {"govender".split("").map((ch, i) => (
-                <span
-                  key={i}
-                  style={{
-                    opacity: 0,
-                    animation: `fadeInUp 0.3s ease ${0.5 + i * 0.08}s forwards`,
-                    display: "inline-block",
-                  }}
-                >
-                  {ch}
-                </span>
-              ))}
-            </h2>
-          </div>
+          <AnimatedText
+            text="kairos govender"
+            textClassName="text-[clamp(2.5rem,8vw,5.5rem)] font-bold"
+            gradientColors="linear-gradient(90deg, #E91E8C, #FF1493, #C2185B, #FF1493, #E91E8C)"
+            gradientAnimationDuration={3}
+          />
         )}
       </div>
 
