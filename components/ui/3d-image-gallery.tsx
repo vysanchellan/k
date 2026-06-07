@@ -37,26 +37,26 @@ function CardProvider({ children }: { children: React.ReactNode }) {
   const [selectedCard, setSelectedCard] = useState<Card | null>(null)
 
   const cards: Card[] = [
-    { id: "1", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "2", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "3", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "4", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "5", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "6", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "7", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "8", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "9", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "10", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "11", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "12", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "13", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "14", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "15", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "16", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "17", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "18", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "19", imageUrl: "", alt: "Kairos", title: "Kairos" },
-    { id: "20", imageUrl: "", alt: "Kairos", title: "Kairos" },
+    { id: "1", imageUrl: "https://i.ibb.co/4ZWcP129/1.png", alt: "Elegant Invitation", title: "Elegant Invitation" },
+    { id: "2", imageUrl: "https://i.ibb.co/TMbhBRcL/2.png", alt: "Modern Design", title: "Modern Design" },
+    { id: "3", imageUrl: "https://i.ibb.co/spXBFdSm/3.png", alt: "Vintage Style", title: "Vintage Style" },
+    { id: "4", imageUrl: "https://i.ibb.co/N2TCN0bC/4.png", alt: "Minimalist", title: "Minimalist" },
+    { id: "5", imageUrl: "https://i.ibb.co/jZkh6q1M/5.png", alt: "Floral Design", title: "Floral Design" },
+    { id: "6", imageUrl: "https://i.ibb.co/6cc7mksr/6.png", alt: "Geometric", title: "Geometric" },
+    { id: "7", imageUrl: "https://i.ibb.co/bjV35jNQ/7.png", alt: "Luxury Gold", title: "Luxury Gold" },
+    { id: "8", imageUrl: "https://i.ibb.co/PZ7WLs7g/8.png", alt: "Rustic Style", title: "Rustic Style" },
+    { id: "9", imageUrl: "https://i.ibb.co/qLR5bQRM/9.png", alt: "Dark Modern", title: "Dark Modern" },
+    { id: "10", imageUrl: "https://i.ibb.co/PdNhw3K/10.png", alt: "Colorful Party", title: "Colorful Party" },
+    { id: "11", imageUrl: "https://i.ibb.co/zWpN1nqJ/11.png", alt: "Geometric", title: "Geometric" },
+    { id: "12", imageUrl: "https://i.ibb.co/fVYnCXgR/12.png", alt: "Luxury Gold", title: "Luxury Gold" },
+    { id: "13", imageUrl: "https://i.ibb.co/1G6jZWcZ/13.png", alt: "Rustic Style", title: "Rustic Style" },
+    { id: "14", imageUrl: "https://i.ibb.co/xKG7m905/14.png", alt: "Dark Modern", title: "Dark Modern" },
+    { id: "15", imageUrl: "https://i.ibb.co/7dJzR3xK/15.png", alt: "Colorful Party", title: "Colorful Party" },
+    { id: "16", imageUrl: "https://i.ibb.co/NdJ1csXB/16.png", alt: "Elegant Script", title: "Elegant Script" },
+    { id: "17", imageUrl: "https://i.ibb.co/8L2Sdt5Q/17.png", alt: "Watercolor Art", title: "Watercolor Art" },
+    { id: "18", imageUrl: "https://i.ibb.co/mC1zxJYq/18.png", alt: "Botanical", title: "Botanical" },
+    { id: "19", imageUrl: "https://i.ibb.co/wryzsKs4/20.png", alt: "Art Deco", title: "Art Deco" },
+    { id: "20", imageUrl: "https://i.ibb.co/1fvnxL3L/19.png", alt: "Marble Luxury", title: "Marble Luxury" },
   ]
 
   return (
@@ -178,11 +178,13 @@ function FloatingCard({
             border: hovered ? "2px solid rgba(233,30,140,0.5)" : "1px solid rgba(255, 255, 255, 0.1)",
           }}
         >
-          <div className="w-full h-40 rounded-md flex items-center justify-center" style={{ backgroundColor: "var(--bg-elevated)" }}>
-            <span style={{ color: "var(--primary-dim)", fontSize: "0.7rem", fontFamily: "'Fira Code', monospace", opacity: 0.5 }}>
-              {card.title}
-            </span>
-          </div>
+          <img
+            src={card.imageUrl || "/placeholder.svg"}
+            alt={card.alt}
+            className="w-full h-40 object-cover rounded-md"
+            loading="lazy"
+            draggable={false}
+          />
           <div className="mt-1 text-center">
             <p className="text-white text-xs font-medium truncate">{card.title}</p>
           </div>
@@ -244,17 +246,13 @@ function CardModal() {
             onMouseLeave={handleMouseLeave}
           >
             <div className="relative w-full mb-4" style={{ aspectRatio: "3 / 4" }}>
-              <div
-                style={{
-                  position: "absolute", inset: 0, borderRadius: 16,
-                  backgroundColor: "var(--bg-elevated)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                }}
-              >
-                <span style={{ color: "var(--primary-dim)", fontSize: "0.8rem", fontFamily: "'Fira Code', monospace", opacity: 0.4 }}>
-                  {selectedCard.title}
-                </span>
-              </div>
+              <img
+                loading="lazy"
+                className="absolute inset-0 h-full w-full rounded-[16px] bg-[#000000] object-cover"
+                alt={selectedCard.alt}
+                src={selectedCard.imageUrl || "/placeholder.svg"}
+                style={{ boxShadow: "rgba(0, 0, 0, 0.05) 0px 5px 6px 0px", opacity: 1 }}
+              />
             </div>
 
             <h3 className="text-white text-lg font-semibold mb-4 text-center">{selectedCard.title}</h3>
@@ -342,7 +340,7 @@ function CardGalaxy() {
 export default function StellarCardGallerySingle() {
   return (
     <CardProvider>
-      <div className="w-full h-screen relative overflow-hidden bg-black">
+      <div className="w-full h-full relative overflow-hidden bg-black" style={{ height: "100vh" }}>
         <StarfieldBackground />
 
         <Canvas
@@ -374,6 +372,29 @@ export default function StellarCardGallerySingle() {
         </Canvas>
 
         <CardModal />
+
+        <div
+          style={{
+            position: "absolute",
+            top: 16,
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 20,
+            textAlign: "center",
+            pointerEvents: "none",
+          }}
+        >
+          <p
+            style={{
+              color: "rgba(255,255,255,0.5)",
+              fontSize: "0.7rem",
+              fontFamily: "'Fira Code', monospace",
+              letterSpacing: "0.1em",
+            }}
+          >
+            drag to look around &bull; scroll to zoom &bull; click a card
+          </p>
+        </div>
       </div>
     </CardProvider>
   )

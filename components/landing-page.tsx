@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { StarsBackground } from "@/components/stars-background";
+import { Starfield3DBg } from "@/components/starfield-3d-bg";
 import { ParticleCanvas } from "@/components/ui/particle-canvas";
 import { LoveHeart } from "@/components/love-heart";
 import { TerminalSection } from "@/components/terminal-section";
@@ -41,7 +41,7 @@ export function LandingPage() {
     <ErrorBoundary>
     <main style={{ position: "relative", zIndex: 1 }}>
       <CustomCursor />
-      <StarsBackground />
+      <Starfield3DBg />
 
       {/* Section 1 — Hero */}
       <section
@@ -80,7 +80,7 @@ export function LandingPage() {
               style={{
                 color: "var(--text-muted)",
                 fontSize: "0.85rem",
-                marginTop: 8,
+                marginTop: 4,
               }}
             >
               made with love, written in code
@@ -91,20 +91,20 @@ export function LandingPage() {
         {showScroll && (
           <div
             style={{
-              position: "absolute", bottom: 30,
-              color: "var(--text-dim)",
+              position: "absolute", bottom: 28,
               animation: "float 2s ease-in-out infinite",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              gap: 2,
-              opacity: 0.5,
-              fontFamily: "'Fira Code', monospace",
+              gap: 4,
+              opacity: 0.35,
             }}
           >
-            <span style={{ fontSize: "0.6rem", letterSpacing: "0.15em", textTransform: "uppercase" }}>scroll</span>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ opacity: 0.7 }}>
-              <path d="M7 1v10M3 7l4 4 4-4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+            <svg width="20" height="28" viewBox="0 0 20 28" fill="none" style={{ opacity: 0.6 }}>
+              <rect x="1.5" y="1.5" width="17" height="25" rx="8.5" stroke="#E91E8C" strokeWidth="1.5" />
+              <circle cx="10" cy="9" r="2.5" fill="#E91E8C">
+                <animate attributeName="cy" values="9;16;9" dur="2s" repeatCount="indefinite" />
+              </circle>
             </svg>
           </div>
         )}
@@ -235,7 +235,7 @@ export function LandingPage() {
       {/* Section 7 — Sign-off */}
       <section
         style={{
-          padding: "120px 20px",
+          padding: "80px 20px 120px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
