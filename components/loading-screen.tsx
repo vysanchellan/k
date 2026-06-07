@@ -67,7 +67,7 @@ export function LoadingScreen({ onComplete }: Props) {
         {step >= 5 && (
           <AnimatedText
             text="kairos govender"
-            textClassName="text-[clamp(2.5rem,8vw,5.5rem)] font-bold"
+            textClassName="text-[clamp(2.5rem,8vw,5.5rem)] font-bold font-futura"
             gradientColors="linear-gradient(90deg, #E91E8C, #FF1493, #C2185B, #FF1493, #E91E8C)"
             gradientAnimationDuration={3}
           />

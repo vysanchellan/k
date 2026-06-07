@@ -10,7 +10,7 @@ import {
   Plane,
   Sphere,
 } from "@react-three/drei"
-import { Download, Heart, X } from "lucide-react"
+
 
 type Card = {
   id: string
@@ -195,28 +195,8 @@ function FloatingCard({
 function CardModal() {
   const { selectedCard, setSelectedCard } = useCard()
   const [isFavorited, setIsFavorited] = useState(false)
-  const cardRef = useRef<HTMLDivElement>(null)
 
   if (!selectedCard) return null
-
-  const handleMouseMove: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    if (!cardRef.current) return
-    const rect = cardRef.current.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    const centerX = rect.width / 2
-    const centerY = rect.height / 2
-    const rotateX = (y - centerY) / 15
-    const rotateY = (centerX - x) / 15
-    cardRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
-  }
-
-  const handleMouseLeave = () => {
-    if (cardRef.current) {
-      cardRef.current.style.transition = "transform 0.5s ease-out"
-      cardRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)"
-    }
-  }
 
   const toggleFavorite = () => setIsFavorited((v) => !v)
   const handleClose = () => setSelectedCard(null)
@@ -225,96 +205,120 @@ function CardModal() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm" onClick={handleBackdropClick}>
-      <div className="relative max-w-md w-full mx-4">
-        <button onClick={handleClose} className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-10">
-          <X className="w-8 h-8" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md" onClick={handleBackdropClick}>
+      <div
+        style={{
+          position: "relative",
+          width: "90vw",
+          maxWidth: 420,
+          maxHeight: "90vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <button
+          onClick={handleClose}
+          style={{
+            position: "absolute",
+            top: -44,
+            right: 0,
+            zIndex: 10,
+            background: "linear-gradient(135deg, rgba(233,30,140,0.25), rgba(194,24,91,0.15))",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            border: "1px solid rgba(255,255,255,0.12)",
+            borderRadius: "50%",
+            width: 38,
+            height: 38,
+            color: "#fff",
+            fontSize: "1.1rem",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)",
+            transition: "all 0.3s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "linear-gradient(135deg, rgba(233,30,140,0.4), rgba(194,24,91,0.3))";
+            e.currentTarget.style.borderColor = "rgba(233,30,140,0.4)";
+            e.currentTarget.style.transform = "scale(1.1)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "linear-gradient(135deg, rgba(233,30,140,0.25), rgba(194,24,91,0.15))";
+            e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
+            e.currentTarget.style.transform = "scale(1)";
+          }}
+        >
+          ✕
         </button>
 
-        <div style={{ perspective: "1000px" }} className="w-full">
+        <div
+          style={{
+            width: "100%",
+            borderRadius: 20,
+            overflow: "hidden",
+            background: "linear-gradient(135deg, rgba(30,30,40,0.95), rgba(15,15,25,0.98))",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            border: "1px solid rgba(255,255,255,0.08)",
+            boxShadow: "0 24px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05)",
+          }}
+        >
+          <div style={{ position: "relative", width: "100%" }}>
+            <img
+              loading="lazy"
+              alt={selectedCard.alt}
+              src={selectedCard.imageUrl || "/placeholder.svg"}
+              style={{
+                width: "100%",
+                display: "block",
+                objectFit: "contain",
+                maxHeight: "70vh",
+              }}
+            />
+          </div>
+
           <div
-            ref={cardRef}
-            className="relative cursor-pointer rounded-[16px] bg-[#1F2121] p-4 transition-all duration-500 ease-out w-full"
             style={{
-              transformStyle: "preserve-3d",
-              boxShadow:
-                "rgba(0, 0, 0, 0.01) 0px 520px 146px 0px, rgba(0, 0, 0, 0.04) 0px 333px 133px 0px, rgba(0, 0, 0, 0.26) 0px 83px 83px 0px, rgba(0, 0, 0, 0.29) 0px 21px 46px 0px",
+              padding: "14px 20px 18px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
           >
-            <div className="relative w-full mb-4" style={{ aspectRatio: "3 / 4" }}>
-              <img
-                loading="lazy"
-                className="absolute inset-0 h-full w-full rounded-[16px] bg-[#000000] object-cover"
-                alt={selectedCard.alt}
-                src={selectedCard.imageUrl || "/placeholder.svg"}
-                style={{ boxShadow: "rgba(0, 0, 0, 0.05) 0px 5px 6px 0px", opacity: 1 }}
-              />
-            </div>
+            <h3
+              style={{
+                color: "rgba(255,255,255,0.8)",
+                fontSize: "0.9rem",
+                fontFamily: "'Cormorant Garamond', serif",
+                fontStyle: "italic",
+                letterSpacing: "0.02em",
+              }}
+            >
+              {selectedCard.title}
+            </h3>
 
-            <h3 className="text-white text-lg font-semibold mb-4 text-center">{selectedCard.title}</h3>
-
-            <div className="flex gap-2">
-              <button
-                type="button"
-                className="inline-flex h-10 flex-1 items-center justify-center rounded-xl text-sm font-medium text-white outline-none transition duration-300 ease-out hover:scale-[1.02] active:scale-[0.97]"
-                style={{
-                  background: "linear-gradient(135deg, rgba(233,30,140,0.6), rgba(194,24,91,0.4))",
-                  backdropFilter: "blur(16px)",
-                  WebkitBackdropFilter: "blur(16px)",
-                  border: "1px solid rgba(255,255,255,0.15)",
-                  boxShadow: "0 4px 24px rgba(233,30,140,0.25), inset 0 1px 0 rgba(255,255,255,0.2)",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-              >
-                <span
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: "-50%",
-                    width: "200%",
-                    height: "100%",
-                    background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)",
-                    transform: "skewX(-20deg)",
-                    animation: "shimmer 3s ease-in-out infinite",
-                  }}
-                />
-                <div className="flex items-center gap-1.5" style={{ position: "relative", zIndex: 1 }}>
-                  <Download className="h-4 w-4" strokeWidth={1.8} />
-                  <span>Download</span>
-                </div>
-              </button>
-              <button
-                type="button"
-                onClick={toggleFavorite}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-white outline-none transition duration-300 ease-out hover:scale-105 active:scale-[0.97]"
-                style={{
-                  background: "linear-gradient(135deg, rgba(233,30,140,0.6), rgba(194,24,91,0.4))",
-                  backdropFilter: "blur(16px)",
-                  WebkitBackdropFilter: "blur(16px)",
-                  border: "1px solid rgba(255,255,255,0.15)",
-                  boxShadow: "0 4px 24px rgba(233,30,140,0.25), inset 0 1px 0 rgba(255,255,255,0.2)",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-              >
-                <span
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: "-50%",
-                    width: "200%",
-                    height: "100%",
-                    background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)",
-                    transform: "skewX(-20deg)",
-                    animation: "shimmer 3s ease-in-out infinite",
-                  }}
-                />
-                <Heart className="h-4 w-4" strokeWidth={1.8} fill={isFavorited ? "currentColor" : "none"} style={{ position: "relative", zIndex: 1 }} />
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={toggleFavorite}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "1.5rem",
+                lineHeight: 1,
+                padding: 4,
+                color: isFavorited ? "#E91E8C" : "rgba(255,255,255,0.3)",
+                textShadow: isFavorited ? "0 0 12px rgba(233,30,140,0.6)" : "none",
+                transition: "all 0.3s ease",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.2)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; }}
+            >
+              ♥
+            </button>
           </div>
         </div>
       </div>
