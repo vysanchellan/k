@@ -10,8 +10,8 @@ export function LoveHeart() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const size = Math.min(800, window.innerWidth - 40);
     const dpr = window.devicePixelRatio || 1;
+    const size = 500;
     canvas.width = size * dpr;
     canvas.height = size * dpr;
     canvas.style.width = size + "px";
@@ -19,12 +19,12 @@ export function LoveHeart() {
     ctx.scale(dpr, dpr);
 
     const cx = size / 2;
-    const cy = size / 2 + 12;
+    const cy = size / 2 + 15;
 
     const text = "i love you ";
-    const numPoints = 500;
-    const numRings = 16;
-    const scale = size / 55;
+    const numPoints = 140;
+    const numRings = 8;
+    const scale = 11;
 
     function heartX(t: number) {
       return 16 * Math.pow(Math.sin(t), 3);
@@ -42,51 +42,46 @@ export function LoveHeart() {
 
     let rotationAngle = 0;
     let animId: number;
-
     const xTilt = -0.15;
-    const fontSize = Math.max(14, size / 45);
+    const fontSize = 20;
 
     function draw() {
       try {
-        const cvs = canvas;
         const c = ctx;
-        if (!cvs || !c) return;
-
+        if (!c) return;
         rotationAngle += 0.006;
         c.clearRect(0, 0, size, size);
 
-        for (let ring = 0; ring < numRings; ring++) {
-          const rMult = 0.5 + (ring / numRings) * 0.65;
-          const ringAngle = (ring / numRings) * Math.PI;
-          const zOff = Math.sin(ringAngle) * size * 0.16;
+        const cosTX = Math.cos(xTilt);
+        const sinTX = Math.sin(xTilt);
 
-          const cosR = Math.cos(rotationAngle);
-          const sinR = Math.sin(rotationAngle);
-          const cosTX = Math.cos(xTilt);
-          const sinTX = Math.sin(xTilt);
+        for (let ring = 0; ring < numRings; ring++) {
+          const rMult = 0.6 + (ring / numRings) * 0.5;
+          const zOff = Math.sin((ring / numRings) * Math.PI) * 70;
 
           for (let i = 0; i < numPoints; i++) {
             const pt = pts[i];
             const hx = pt.x * scale * rMult;
             const hy = pt.y * scale * rMult;
-            const hz = zOff;
 
-            let y1 = hy * cosTX - hz * sinTX;
-            let z1 = hy * sinTX + hz * cosTX;
+            let y1 = hy * cosTX - zOff * sinTX;
+            let z1 = hy * sinTX + zOff * cosTX;
 
+            const cosR = Math.cos(rotationAngle);
+            const sinR = Math.sin(rotationAngle);
             const rx = hx * cosR - z1 * sinR;
             const rz = hx * sinR + z1 * cosR;
 
-            const perspective = 600 / (600 + rz);
+            const perspective = 500 / (500 + rz);
             const sx = cx + rx * perspective;
             const sy = cy + y1 * perspective;
 
             if (isNaN(sx) || isNaN(sy)) continue;
 
-            const alpha = 0.35 + 0.65 * Math.min(1, Math.max(0, perspective));
+            const alpha = 0.3 + 0.7 * Math.min(1, Math.max(0, perspective));
             c.globalAlpha = alpha;
             c.fillStyle = "#E91E8C";
-            c.font = `${fontSize}px 'Fira Code', monospace`;
+            c.font = `${fontSize}px "Fira Code", monospace`;
             c.textAlign = "center";
             c.textBaseline = "middle";
 
@@ -97,15 +92,12 @@ export function LoveHeart() {
 
         animId = requestAnimationFrame(draw);
       } catch (e) {
-        console.error("LoveHeart draw error:", e);
+        console.error("Heart error:", e);
       }
     }
 
     draw();
-
-    return () => {
-      cancelAnimationFrame(animId);
-    };
+    return () => cancelAnimationFrame(animId);
   }, []);
 
   return (
