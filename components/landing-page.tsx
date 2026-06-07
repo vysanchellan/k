@@ -1,25 +1,44 @@
 "use client";
 import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 import { StarsBackground } from "@/components/stars-background";
 import { ParticleCanvas } from "@/components/ui/particle-canvas";
-import { SpecialText } from "@/components/ui/special-text";
 import { LoveHeart } from "@/components/love-heart";
-import { TerminalLove } from "@/components/terminal-love";
-import { MemoryVault } from "@/components/memory-vault";
+import { TerminalSection } from "@/components/terminal-section";
+import { MiniGameSection } from "@/components/mini-game-section";
+import { DisplayCardsSection } from "@/components/display-cards-section";
 import { CodePoem } from "@/components/code-poem";
+import { CustomCursor } from "@/components/custom-cursor";
+
+function FadeUp({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 60 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.7, delay }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 export function LandingPage() {
   const [showSubtext, setShowSubtext] = useState(false);
+  const [showScroll, setShowScroll] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setShowSubtext(true), 1000);
-    return () => clearTimeout(t);
+    const t1 = setTimeout(() => setShowSubtext(true), 800);
+    const t2 = setTimeout(() => setShowScroll(true), 1400);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
 
   return (
     <main style={{ position: "relative", zIndex: 1 }}>
+      <CustomCursor />
       <StarsBackground />
 
+      {/* Section 1 — Hero */}
       <section
         style={{
           minHeight: "100vh",
@@ -32,180 +51,227 @@ export function LandingPage() {
         }}
       >
         <div style={{ position: "absolute", inset: 0 }}>
-          <ParticleCanvas maxParticles={600} speedScale={1.2} />
+          <ParticleCanvas followMouse={true} maxParticles={800} speedScale={1.5} />
         </div>
 
-        <div style={{ position: "relative", zIndex: 2, textAlign: "center" }}>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          style={{ position: "relative", zIndex: 2, textAlign: "center" }}
+        >
           <LoveHeart />
 
           <h1
+            className="serif"
             style={{
-              fontFamily: "'Playfair Display', serif",
+              fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
+              color: "var(--primary)",
               fontStyle: "italic",
-              fontSize: "clamp(1.5rem, 5vw, 3rem)",
-              color: "#ea80b0",
+              animation: "pulse-glow 3s ease-in-out infinite",
               marginTop: 8,
-              marginBottom: 8,
+              lineHeight: 1.2,
             }}
           >
-            <SpecialText text="for kairos." duration={1500} delay={300} />
+            for kairos.
           </h1>
 
           {showSubtext && (
-            <p
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8 }}
               style={{
-                color: "#9b7aa0",
-                fontSize: "0.9rem",
-                fontFamily: "'JetBrains Mono', monospace",
-                animation: "fadeIn 1s ease",
+                color: "var(--text-muted)",
+                fontSize: "0.85rem",
+                marginTop: 8,
               }}
             >
               made with love, written in code
-            </p>
+            </motion.p>
           )}
-        </div>
+        </motion.div>
 
-        <div
-          style={{
-            position: "absolute",
-            bottom: 30,
-            color: "#ea80b080",
-            fontSize: "1.5rem",
-            animation: "float 2s ease-in-out infinite",
-          }}
-        >
-          ⌄
-        </div>
-
-        <style>{`@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }`}</style>
+        {showScroll && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            style={{
+              position: "absolute", bottom: 30,
+              color: "var(--text-dim)", fontSize: "0.7rem",
+              animation: "float 2s ease-in-out infinite",
+            }}
+          >
+            scroll &darr;
+          </motion.div>
+        )}
       </section>
 
-      <section
-        style={{
-          padding: "80px 20px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          position: "relative",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            top: "50%", left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400, height: 400,
-            borderRadius: "50%",
-            backgroundColor: "#ea80b0",
-            filter: "blur(120px)",
-            opacity: 0.08,
-            pointerEvents: "none",
-          }}
-        />
-
-        <h2
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            color: "#ea80b0",
-            fontSize: "1rem",
-            marginBottom: 32,
-          }}
-        >
-          {"> hello, kairos"}
-        </h2>
-
-        <TerminalLove />
-      </section>
-
-      <section
-        style={{
-          padding: "80px 20px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <h2
-          style={{
-            fontFamily: "'Playfair Display', serif",
-            color: "#f5e6f0",
-            fontSize: "clamp(1.2rem, 3vw, 1.8rem)",
-            marginBottom: 32,
-            textAlign: "center",
-          }}
-        >
-          our favourite moments
-        </h2>
-
-        <MemoryVault />
-      </section>
-
-      <section
-        style={{
-          padding: "80px 20px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <h2
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            color: "#b08eea",
-            fontSize: "0.9rem",
-            marginBottom: 32,
-          }}
-        >
-          // something i wrote for you
-        </h2>
-
-        <CodePoem />
-      </section>
-
+      {/* Section 2 — Terminal */}
       <section
         style={{
           padding: "100px 20px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          textAlign: "center",
-          gap: 16,
+          position: "relative",
+          background: "linear-gradient(180deg, var(--bg), var(--bg-elevated))",
         }}
       >
-        <p
-          style={{
-            fontFamily: "'Playfair Display', serif",
-            fontStyle: "italic",
-            fontSize: "clamp(1.2rem, 3vw, 1.8rem)",
-            color: "#f5e6f0",
-            maxWidth: 500,
-            lineHeight: 1.5,
-          }}
-        >
-          You are my kairos — my perfect, opportune moment.
-        </p>
+        <FadeUp>
+          <p style={{ color: "var(--primary-dim)", fontSize: "0.75rem", marginBottom: 8, textAlign: "center" }}>
+            {"> hello, kairos"}
+          </p>
+          <h2
+            className="serif"
+            style={{
+              fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
+              fontStyle: "italic",
+              color: "var(--text)",
+              marginBottom: 32,
+              textAlign: "center",
+            }}
+          >
+            talk to me.
+          </h2>
+          <TerminalSection />
+        </FadeUp>
+      </section>
 
-        <p
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "0.8rem",
-            color: "#9b7aa0",
-          }}
-        >
-          {"> end of file. love never terminates."}
-        </p>
+      {/* Section 3 — Games Hub */}
+      <section
+        style={{
+          padding: "100px 20px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <FadeUp>
+          <p style={{ color: "var(--primary-dim)", fontSize: "0.75rem", marginBottom: 8, textAlign: "center" }}>
+            {"> entertainment.exe"}
+          </p>
+          <h2
+            className="serif"
+            style={{
+              fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
+              fontStyle: "italic",
+              color: "var(--text)",
+              marginBottom: 32,
+              textAlign: "center",
+            }}
+          >
+            play something.
+          </h2>
+          <MiniGameSection />
+        </FadeUp>
+      </section>
 
-        <span
-          style={{
-            color: "#ea80b0",
-            fontSize: "1.5rem",
-            animation: "pulse-glow 2s ease-in-out infinite",
-            display: "inline-block",
-            marginTop: 8,
-          }}
-        >
-          ♡
-        </span>
+      {/* Section 4 — Her Traits */}
+      <section
+        style={{
+          padding: "100px 20px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          background: "linear-gradient(180deg, var(--bg-elevated), var(--bg))",
+        }}
+      >
+        <FadeUp>
+          <p style={{ color: "var(--primary-dim)", fontSize: "0.75rem", marginBottom: 8, textAlign: "center" }}>
+            {"> profile.json"}
+          </p>
+          <h2
+            className="serif"
+            style={{
+              fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
+              fontStyle: "italic",
+              color: "var(--text)",
+              marginBottom: 32,
+              textAlign: "center",
+            }}
+          >
+            who she is.
+          </h2>
+          <DisplayCardsSection />
+        </FadeUp>
+      </section>
+
+      {/* Section 5 — Code Poem */}
+      <section
+        style={{
+          padding: "100px 20px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <FadeUp>
+          <p style={{ color: "var(--primary-dim)", fontSize: "0.75rem", marginBottom: 8, textAlign: "center" }}>
+            {"> kairos.ts"}
+          </p>
+          <h2
+            className="serif"
+            style={{
+              fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
+              fontStyle: "italic",
+              color: "var(--text)",
+              marginBottom: 32,
+              textAlign: "center",
+            }}
+          >
+            in code, as in life.
+          </h2>
+          <CodePoem />
+        </FadeUp>
+      </section>
+
+      {/* Section 6 — Sign-off */}
+      <section
+        style={{
+          padding: "120px 20px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          textAlign: "center",
+          position: "relative",
+        }}
+      >
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+          <ParticleCanvas
+            followMouse={false}
+            maxParticles={400}
+            speedScale={0.8}
+          />
+        </div>
+
+        <FadeUp>
+          <h1
+            className="serif"
+            style={{
+              fontSize: "clamp(3rem, 10vw, 7rem)",
+              color: "var(--primary)",
+              animation: "pulse-glow 4s ease-in-out infinite",
+              letterSpacing: "-0.03em",
+              position: "relative",
+              zIndex: 2,
+            }}
+          >
+            kairos
+          </h1>
+          <p
+            style={{
+              color: "var(--text-muted)",
+              fontSize: "0.85rem",
+              marginTop: 16,
+              position: "relative",
+              zIndex: 2,
+            }}
+          >
+            // end of file
+          </p>
+        </FadeUp>
       </section>
     </main>
   );

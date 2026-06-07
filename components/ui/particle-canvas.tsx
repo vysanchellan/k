@@ -1,72 +1,66 @@
 "use client";
 import { useEffect, useRef } from 'react';
 
-const Helper = {
-  createShader: (gl: WebGLRenderingContext, type: number, source: string) => {
-    const shader = gl.createShader(type)!;
-    gl.shaderSource(shader, source);
-    gl.compileShader(shader);
-    return shader;
-  },
-  createProgram: (gl: WebGLRenderingContext, vertexShader: WebGLShader, fragmentShader: WebGLShader) => {
-    const program = gl.createProgram()!;
-    gl.attachShader(program, vertexShader);
-    gl.attachShader(program, fragmentShader);
-    gl.linkProgram(program);
-    return program;
-  },
-  pixel2DVertexVaryingShader: `
-    attribute vec2 a_position;
-    uniform vec2 u_resolution;
-    attribute vec2 a_color;
-    varying vec2 v_color;
-    void main(){
-      gl_Position = vec4( vec2( 1, -1 ) * ( ( a_position / u_resolution ) * 2.0 - 1.0 ), 0, 1 );
-      v_color = a_color;
-    }
-  `,
-  uniform2DFragmentVaryingShader: `
-    precision mediump float;
-    varying vec2 v_color;
-    uniform float u_tick;
-    void main(){
-      float t = abs(sin(v_color.x * 3.14159 + u_tick));
-      vec3 pink = vec3(0.918, 0.502, 0.690);
-      vec3 lavender = vec3(0.690, 0.557, 0.918);
-      vec3 color = mix(pink, lavender, t) * v_color.y;
-      gl_FragColor = vec4(color, v_color.y * 0.85);
-    }
-  `
-};
-
-function getCircleTriangles(sides: number) {
-  const verts: number[] = [];
-  for (let i = 0; i < sides; i++) {
-    const angle0 = (i / sides) * Math.PI * 2;
-    const angle1 = ((i + 1) / sides) * Math.PI * 2;
-    verts.push(0, 0);
-    verts.push(Math.cos(angle0), Math.sin(angle0));
-    verts.push(Math.cos(angle1), Math.sin(angle1));
+const vertexShaderSrc = `
+  attribute vec2 a_position;
+  uniform vec2 u_resolution;
+  attribute vec2 a_color;
+  varying vec2 v_color;
+  void main(){
+    gl_Position = vec4(vec2(1,-1)*((a_position/u_resolution)*2.0-1.0),0,1);
+    v_color = a_color;
   }
-  return verts;
+`;
+
+const fragmentShaderSrc = `
+  precision mediump float;
+  varying vec2 v_color;
+  uniform float u_tick;
+  void main(){
+    float t = abs(sin(v_color.x * 6.28318 + u_tick * 0.8));
+    vec3 crimson  = vec3(0.545, 0.0,   0.0);
+    vec3 magenta  = vec3(0.914, 0.118, 0.549);
+    vec3 hotpink  = vec3(1.0,   0.078, 0.576);
+    vec3 col = mix(mix(crimson, magenta, t), hotpink, t * t);
+    col *= v_color.y * 1.3;
+    gl_FragColor = vec4(col, v_color.y * 0.9);
+  }
+`;
+
+function compileShader(gl: WebGLRenderingContext, type: number, src: string) {
+  const s = gl.createShader(type)!;
+  gl.shaderSource(s, src);
+  gl.compileShader(s);
+  return s;
 }
 
-interface Particle {
-  x: number; y: number;
-  vx: number; vy: number;
-  size: number;
-  life: number;
+function linkProgram(gl: WebGLRenderingContext, vs: WebGLShader, fs: WebGLShader) {
+  const p = gl.createProgram()!;
+  gl.attachShader(p, vs);
+  gl.attachShader(p, fs);
+  gl.linkProgram(p);
+  return p;
 }
 
-function createParticle(cx: number, cy: number, speedScale: number, sizeMin: number, sizeMax: number): Particle {
-  const angle = Math.random() * Math.PI * 2;
-  const speed = (0.3 + Math.random() * 0.7) * speedScale * 0.5;
+function circleVerts(sides: number) {
+  const v: number[] = [];
+  for (let i = 0; i < sides; i++) {
+    const a0 = (i / sides) * Math.PI * 2;
+    const a1 = ((i + 1) / sides) * Math.PI * 2;
+    v.push(0, 0, Math.cos(a0), Math.sin(a0), Math.cos(a1), Math.sin(a1));
+  }
+  return v;
+}
+
+function makeParticle(cx: number, cy: number, spd: number, szMin: number, szMax: number) {
+  const a = Math.random() * Math.PI * 2;
+  const s = (0.3 + Math.random() * 0.7) * spd * 0.5;
   return {
-    x: cx + (Math.random() - 0.5) * 60,
-    y: cy + (Math.random() - 0.5) * 60,
-    vx: Math.cos(angle) * speed,
-    vy: Math.sin(angle) * speed,
-    size: sizeMin + Math.random() * (sizeMax - sizeMin),
+    x: cx + (Math.random() - 0.5) * 40,
+    y: cy + (Math.random() - 0.5) * 40,
+    vx: Math.cos(a) * s,
+    vy: Math.sin(a) * s,
+    size: szMin + Math.random() * (szMax - szMin),
     life: 0,
   };
 }
@@ -76,8 +70,7 @@ interface ParticleCanvasProps {
   particleSizeMin?: number;
   particleSizeMax?: number;
   speedScale?: number;
-  originX?: number | null;
-  originY?: number | null;
+  followMouse?: boolean;
 }
 
 export const ParticleCanvas = ({
@@ -85,8 +78,7 @@ export const ParticleCanvas = ({
   particleSizeMin = 2,
   particleSizeMax = 5,
   speedScale = 1.5,
-  originX = null,
-  originY = null,
+  followMouse = true,
 }: ParticleCanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -100,114 +92,106 @@ export const ParticleCanvas = ({
     let h = window.innerHeight;
     canvas.width = w;
     canvas.height = h;
-    let cx = originX ?? w / 2;
-    let cy = originY ?? h / 2;
+    let cx = w / 2;
+    let cy = h / 2;
 
-    const vShader = Helper.createShader(gl, gl.VERTEX_SHADER, Helper.pixel2DVertexVaryingShader);
-    const fShader = Helper.createShader(gl, gl.FRAGMENT_SHADER, Helper.uniform2DFragmentVaryingShader);
-    const program = Helper.createProgram(gl, vShader, fShader);
-    gl.useProgram(program);
+    const vs = compileShader(gl, gl.VERTEX_SHADER, vertexShaderSrc);
+    const fs = compileShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSrc);
+    const prog = linkProgram(gl, vs, fs);
+    gl.useProgram(prog);
 
-    const positionLoc = gl.getAttribLocation(program, 'a_position');
-    const colorLoc = gl.getAttribLocation(program, 'a_color');
-    const resolutionLoc = gl.getUniformLocation(program, 'u_resolution');
-    const tickLoc = gl.getUniformLocation(program, 'u_tick');
+    const posLoc = gl.getAttribLocation(prog, 'a_position');
+    const colLoc = gl.getAttribLocation(prog, 'a_color');
+    const resLoc = gl.getUniformLocation(prog, 'u_resolution');
+    const tickLoc = gl.getUniformLocation(prog, 'u_tick');
 
     const sides = 8;
-    const circleVerts = getCircleTriangles(sides);
-    const VERT_FLOATS = 2;
-    const COLOR_FLOATS = 2;
-    const vertsPerParticle = circleVerts.length / VERT_FLOATS;
+    const cVerts = circleVerts(sides);
+    const vpf = 2;
+    const cpf = 2;
+    const vpp = cVerts.length / vpf;
 
-    const maxVertexCount = maxParticles * vertsPerParticle;
-    const posData = new Float32Array(maxVertexCount * VERT_FLOATS);
-    const colData = new Float32Array(maxVertexCount * COLOR_FLOATS);
-    const posBuf = gl.createBuffer();
-    const colBuf = gl.createBuffer();
+    const maxV = maxParticles * vpp;
+    const posD = new Float32Array(maxV * vpf);
+    const colD = new Float32Array(maxV * cpf);
+    const posB = gl.createBuffer();
+    const colB = gl.createBuffer();
 
-    gl.enableVertexAttribArray(positionLoc);
-    gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
-    gl.bufferData(gl.ARRAY_BUFFER, posData, gl.DYNAMIC_DRAW);
-    gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(posLoc);
+    gl.bindBuffer(gl.ARRAY_BUFFER, posB);
+    gl.bufferData(gl.ARRAY_BUFFER, posD, gl.DYNAMIC_DRAW);
+    gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
 
-    gl.enableVertexAttribArray(colorLoc);
-    gl.bindBuffer(gl.ARRAY_BUFFER, colBuf);
-    gl.bufferData(gl.ARRAY_BUFFER, colData, gl.DYNAMIC_DRAW);
-    gl.vertexAttribPointer(colorLoc, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(colLoc);
+    gl.bindBuffer(gl.ARRAY_BUFFER, colB);
+    gl.bufferData(gl.ARRAY_BUFFER, colD, gl.DYNAMIC_DRAW);
+    gl.vertexAttribPointer(colLoc, 2, gl.FLOAT, false, 0, 0);
 
-    const particles: Particle[] = [];
+    const particles: any[] = [];
     let tick = 0;
     let animId: number;
 
-    function addParticle() {
-      particles.push(createParticle(cx, cy, speedScale, particleSizeMin, particleSizeMax));
+    function addP() {
+      particles.push(makeParticle(cx, cy, speedScale, particleSizeMin, particleSizeMax));
     }
-
-    for (let i = 0; i < 200; i++) addParticle();
+    for (let i = 0; i < 200; i++) addP();
 
     function animate() {
       const g = gl;
       if (!g) return;
       tick += 0.02;
-      const lifeLimit = 180;
+      const ll = 180;
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
         p.life++;
-        if (p.life > lifeLimit) {
-          particles.splice(i, 1);
-          continue;
-        }
-        const drag = 0.98;
-        p.vx *= drag;
-        p.vy *= drag;
+        if (p.life > ll) { particles.splice(i, 1); continue; }
+        p.vx *= 0.98;
+        p.vy *= 0.98;
         p.x += p.vx;
         p.y += p.vy;
         p.vx += (Math.random() - 0.5) * 0.05;
         p.vy += (Math.random() - 0.5) * 0.05;
       }
-
-      while (particles.length < maxParticles) addParticle();
+      while (particles.length < maxParticles) addP();
 
       const active = particles.length;
-      const vertCount = active * vertsPerParticle;
-      const posArr: number[] = [];
-      const colArr: number[] = [];
+      const vc = active * vpp;
+      const pa: number[] = [];
+      const ca: number[] = [];
 
       for (const p of particles) {
-        const progress = p.life / lifeLimit;
-        const alpha = Math.max(0, 1 - progress);
-        const sz = p.size * (1 - progress * 0.5);
-        const hueOffset = (p.x * 0.001 + p.y * 0.001) % 1;
-
-        for (let j = 0; j < vertsPerParticle; j++) {
-          const vi = j * VERT_FLOATS;
-          posArr.push(p.x + circleVerts[vi] * sz, p.y + circleVerts[vi + 1] * sz);
-          colArr.push(hueOffset, alpha);
+        const pr = p.life / ll;
+        const al = Math.max(0, 1 - pr);
+        const sz = p.size * (1 - pr * 0.5);
+        const hOff = (p.x * 0.001 + p.y * 0.001) % 1;
+        for (let j = 0; j < vpp; j++) {
+          const vi = j * vpf;
+          pa.push(p.x + cVerts[vi] * sz, p.y + cVerts[vi + 1] * sz);
+          ca.push(hOff, al);
         }
       }
 
-      posData.set(posArr);
-      colData.set(colArr);
+      posD.set(pa);
+      colD.set(ca);
 
-      g.uniform2f(resolutionLoc, w, h);
+      g.uniform2f(resLoc, w, h);
       g.uniform1f(tickLoc, tick);
 
-      g.bindBuffer(g.ARRAY_BUFFER, posBuf);
-      g.bufferSubData(g.ARRAY_BUFFER, 0, posData.subarray(0, vertCount * VERT_FLOATS));
-      g.bindBuffer(g.ARRAY_BUFFER, colBuf);
-      g.bufferSubData(g.ARRAY_BUFFER, 0, colData.subarray(0, vertCount * COLOR_FLOATS));
+      g.bindBuffer(g.ARRAY_BUFFER, posB);
+      g.bufferSubData(g.ARRAY_BUFFER, 0, posD.subarray(0, vc * vpf));
+      g.bindBuffer(g.ARRAY_BUFFER, colB);
+      g.bufferSubData(g.ARRAY_BUFFER, 0, colD.subarray(0, vc * cpf));
 
       g.clear(g.COLOR_BUFFER_BIT);
-      g.drawArrays(g.TRIANGLES, 0, vertCount);
+      g.drawArrays(g.TRIANGLES, 0, vc);
 
       animId = requestAnimationFrame(animate);
     }
 
     animate();
 
-    const handleMouseMove = (e: MouseEvent) => {
-      if (originX === null) cx = e.clientX;
-      if (originY === null) cy = e.clientY;
+    const handleMouse = (e: MouseEvent) => {
+      if (followMouse) { cx = e.clientX; cy = e.clientY; }
     };
     const handleResize = () => {
       w = window.innerWidth;
@@ -216,12 +200,12 @@ export const ParticleCanvas = ({
       canvas!.height = h;
       gl.viewport(0, 0, w, h);
     };
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouse);
     window.addEventListener('resize', handleResize);
 
     return () => {
       cancelAnimationFrame(animId);
-      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mousemove', handleMouse);
       window.removeEventListener('resize', handleResize);
     };
   }, []);

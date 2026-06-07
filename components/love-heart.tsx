@@ -10,74 +10,74 @@ export function LoveHeart() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    canvas.width = 420;
-    canvas.height = 420;
+    canvas.width = 500;
+    canvas.height = 500;
 
     const cx = canvas.width / 2;
-    const cy = canvas.height / 2 - 20;
+    const cy = canvas.height / 2 + 10;
 
-    const text = "i love you ";
-    const numPoints = 200;
-    const numRings = 8;
-    const scale = 8;
+    const text = "kairos ";
+    const numPoints = 300;
+    const numRings = 12;
+    const scale = 9;
 
     function heartX(t: number) {
       return 16 * Math.pow(Math.sin(t), 3);
     }
 
     function heartY(t: number) {
-      return 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+      return -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
     }
 
-    const heartPoints: { x: number; y: number; t: number }[] = [];
+    const pts: { x: number; y: number }[] = [];
     for (let i = 0; i < numPoints; i++) {
       const t = (i / numPoints) * 2 * Math.PI;
-      heartPoints.push({ x: heartX(t), y: heartY(t), t });
+      pts.push({ x: heartX(t), y: heartY(t) });
     }
 
-    let rotationY = 0;
+    let rotationAngle = 0;
     let animId: number;
+
+    const xTilt = -0.15;
 
     function draw() {
       const cvs = canvas;
       const c = ctx;
       if (!cvs || !c) return;
-      rotationY += 0.008;
+
+      rotationAngle += 0.006;
       c.clearRect(0, 0, cvs.width, cvs.height);
 
-      const xTilt = -15 * (Math.PI / 180);
-
       for (let ring = 0; ring < numRings; ring++) {
-        const radiusMult = 0.8 + (ring / numRings) * 0.4;
-        const zOffset = (ring - numRings / 2) * 3;
+        const rMult = 0.6 + (ring / numRings) * 0.55;
+        const ringAngle = (ring / numRings) * Math.PI;
+        const zOff = Math.sin(ringAngle) * 80;
 
         for (let i = 0; i < numPoints; i++) {
-          const pt = heartPoints[i];
-          const hx = pt.x * scale * radiusMult;
-          const hy = pt.y * scale * radiusMult;
-          const hz = zOffset;
+          const pt = pts[i];
+          const hx = pt.x * scale * rMult;
+          const hy = pt.y * scale * rMult;
+          const hz = zOff;
 
-          const cosRY = Math.cos(rotationY);
-          const sinRY = Math.sin(rotationY);
+          const cosR = Math.cos(rotationAngle);
+          const sinR = Math.sin(rotationAngle);
           const cosTX = Math.cos(xTilt);
           const sinTX = Math.sin(xTilt);
 
-          let xr = hx * cosRY - hz * sinRY;
-          let zr = hx * sinRY + hz * cosRY;
-          let yr = hy;
+          let y1 = hy * cosTX - hz * sinTX;
+          let z1 = hy * sinTX + hz * cosTX;
 
-          let xf = xr;
-          let yf = yr * cosTX - zr * sinTX;
-          let zf = yr * sinTX + zr * cosTX;
+          const rx = hx * cosR - z1 * sinR;
+          const rz = hx * sinR + z1 * cosR;
 
-          const perspective = 600 / (600 + zf);
-          const sx = cx + xf * perspective;
-          const sy = cy + yf * perspective;
+          const perspective = 600 / (600 + rz);
+          const sx = cx + rx * perspective;
+          const sy = cy + y1 * perspective;
 
-          const alpha = Math.max(0.3, Math.min(1, (zf + 30) / 60));
+          const alpha = 0.3 + 0.7 * Math.min(1, Math.max(0, perspective));
           c.globalAlpha = alpha;
-          c.fillStyle = "#ea80b0";
-          c.font = "0.85rem 'Courier New', monospace";
+          c.fillStyle = "#E91E8C";
+          c.font = "11px 'Fira Code', monospace";
           c.textAlign = "center";
           c.textBaseline = "middle";
 
@@ -97,8 +97,8 @@ export function LoveHeart() {
   return (
     <canvas
       ref={canvasRef}
-      width={420}
-      height={420}
+      width={500}
+      height={500}
       style={{ maxWidth: "100%", height: "auto", display: "block" }}
     />
   );

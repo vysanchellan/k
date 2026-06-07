@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "kairos — a love letter",
-  description: "made with love, written in code",
+  title: "kairos",
+  description: "a portrait in code",
 };
 
 export default function RootLayout({
