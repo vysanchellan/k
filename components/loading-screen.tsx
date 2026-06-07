@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { SpecialText } from "@/components/ui/special-text";
 import { ShaderAnimation } from "@/components/ui/shader-animation";
-import { AnimatedText } from "@/components/ui/animated-shiny-text";
 
 interface Props { onComplete: () => void }
 
@@ -11,13 +10,13 @@ export function LoadingScreen({ onComplete }: Props) {
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    const t1 = setTimeout(() => setStep(1), 400);
-    const t2 = setTimeout(() => setStep(2), 1600);
-    const t3 = setTimeout(() => setStep(3), 2800);
-    const t4 = setTimeout(() => setStep(4), 3800);
-    const t5 = setTimeout(() => setStep(5), 4800);
-    const t6 = setTimeout(() => setFadeOut(true), 5800);
-    const t7 = setTimeout(() => onComplete(), 6400);
+    const t1 = setTimeout(() => setStep(1), 500);
+    const t2 = setTimeout(() => setStep(2), 2000);
+    const t3 = setTimeout(() => setStep(3), 3500);
+    const t4 = setTimeout(() => setStep(4), 5000);
+    const t5 = setTimeout(() => setStep(5), 6500);
+    const t6 = setTimeout(() => setFadeOut(true), 9500);
+    const t7 = setTimeout(() => onComplete(), 10200);
     return () => { [t1,t2,t3,t4,t5,t6,t7].forEach(clearTimeout); };
   }, [onComplete]);
 
@@ -60,19 +59,43 @@ export function LoadingScreen({ onComplete }: Props) {
           </p>
         )}
         {step >= 4 && (
-          <p style={{ color: "var(--primary-glow)", fontSize: "0.85rem", opacity: 0.7, marginBottom: "1.5rem" }}>
+          <p style={{ color: "var(--primary-glow)", fontSize: "0.85rem", opacity: 0.7, marginBottom: "0.5rem" }}>
             <SpecialText text="> done. rendering..." duration={600} />
           </p>
         )}
-        {step >= 5 && (
-          <AnimatedText
-            text="kairos govender"
-            textClassName="text-[clamp(2.5rem,8vw,5.5rem)] font-bold font-futura"
-            gradientColors="linear-gradient(90deg, #E91E8C, #FF1493, #C2185B, #FF1493, #E91E8C)"
-            gradientAnimationDuration={3}
-          />
-        )}
       </div>
+
+      {step >= 5 && (
+        <div
+          style={{
+            position: "relative", zIndex: 2, textAlign: "center", padding: "0 20px",
+            marginTop: 40,
+          }}
+        >
+          <p
+            style={{
+              fontSize: "0.8rem", lineHeight: 1.8, opacity: 0.6,
+              color: "var(--text-muted)",
+            }}
+          >
+            <SpecialText
+              text="developed by vysan chellan, for kairos govender."
+              duration={1200}
+            />
+          </p>
+          <p
+            style={{
+              fontSize: "0.8rem", lineHeight: 1.8, opacity: 0.6,
+              color: "var(--text-muted)", marginTop: 8,
+            }}
+          >
+            <SpecialText
+              text="you're annoying, troublesome, and childish, but you mean everything to me."
+              duration={1500}
+            />
+          </p>
+        </div>
+      )}
 
       <div
         style={{

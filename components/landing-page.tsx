@@ -66,8 +66,6 @@ export function LandingPage() {
             opacity: 0,
           }}
         >
-          <LoveHeart />
-
           <AnimatedText
             text="for kairos."
             textClassName="text-[clamp(2.5rem,6vw,4.5rem)] font-bold italic"
@@ -168,6 +166,26 @@ export function LandingPage() {
           </h2>
           <MiniGameSection />
         </FadeUp>
+      </section>
+
+      {/* Heart Divider */}
+      <section
+        style={{
+          padding: "40px 20px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div
+          style={{
+            animation: "heart-zoom-in 1s ease-out 0.2s forwards",
+            opacity: 0,
+          }}
+        >
+          <LoveHeart />
+        </div>
       </section>
 
       {/* Section 4 — Her Traits */}
